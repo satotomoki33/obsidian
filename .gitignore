@@ -1,0 +1,8 @@
+# Obsidianの内部キャッシュや作業状態を無視
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/graph.json
+.obsidian/cache/
+
+# OSが生成するゴミファイル
+.DS_Store
