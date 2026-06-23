@@ -1,0 +1,76 @@
+{
+  "recentFiles": [
+    {
+      "basename": "ロボコン",
+      "path": "ロボコン/ロボコン.md"
+    },
+    {
+      "basename": "MF回収",
+      "path": "ロボコン/MF回収.md"
+    },
+    {
+      "basename": "試合振り返り",
+      "path": "ロボコン/試合振り返り.md"
+    },
+    {
+      "basename": "経路生成、経路追従について",
+      "path": "ロボコン/経路生成、経路追従について.md"
+    },
+    {
+      "basename": "コマンドメモ",
+      "path": "ロボコン/コマンドメモ.md"
+    },
+    {
+      "basename": "結果",
+      "path": "CPU設計/結果.md"
+    },
+    {
+      "basename": "実験レポートの補足説明",
+      "path": "ネットワークセキュリティ実験/実験レポートの補足説明.md"
+    },
+    {
+      "basename": "ラテパン試験手順",
+      "path": "ロボコン/ラテパン試験手順.md"
+    },
+    {
+      "basename": "自動槍組み立て構想",
+      "path": "ロボコン/自動槍組み立て構想.md"
+    },
+    {
+      "basename": "槍使用、KFS配置の実装計画",
+      "path": "ロボコン/槍使用、KFS配置の実装計画.md"
+    },
+    {
+      "basename": "ネットワークセキュリティ",
+      "path": "ネットワークセキュリティ実験/ネットワークセキュリティ.md"
+    },
+    {
+      "basename": "マイクロプロセッサ",
+      "path": "マイクロプロセッサ.md"
+    },
+    {
+      "basename": "メモ",
+      "path": "ネットワークセキュリティ実験/メモ.md"
+    },
+    {
+      "basename": "日本語学特論",
+      "path": "日本語学特論.md"
+    },
+    {
+      "basename": "Linuxコマンドメモ",
+      "path": "Linuxコマンドメモ.md"
+    },
+    {
+      "basename": "ファイル管理",
+      "path": "ファイル管理.base"
+    },
+    {
+      "basename": "無題のファイル",
+      "path": "無題のファイル.base"
+    }
+  ],
+  "omittedPaths": [],
+  "omittedTags": [],
+  "updateOn": "file-open",
+  "omitBookmarks": false
+}

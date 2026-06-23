@@ -1,0 +1,10 @@
+{
+  "menuCommands": [
+    {
+      "id": "editor:insert-callout",
+      "name": "コールアウトを挿入",
+      "icon": "lucide-quote"
+    }
+  ],
+  "hideTitles": []
+}
