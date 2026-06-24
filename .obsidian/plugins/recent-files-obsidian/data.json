@@ -1,6 +1,10 @@
 {
   "recentFiles": [
     {
+      "basename": "ロボコン",
+      "path": "ロボコン/ロボコン.md"
+    },
+    {
       "basename": "MF回収",
       "path": "ロボコン/MF回収.md"
     },
@@ -23,10 +27,6 @@
     {
       "basename": "コマンドメモ",
       "path": "ロボコン/コマンドメモ.md"
-    },
-    {
-      "basename": "ロボコン",
-      "path": "ロボコン/ロボコン.md"
     },
     {
       "basename": "試合振り返り",
