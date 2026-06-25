@@ -3,6 +3,7 @@
 .obsidian/workspace-mobile.json
 .obsidian/graph.json
 .obsidian/cache/
+.obsidian/plugins/recent-files-obsidian/data.json
 
 # OSが生成するゴミファイル
 .DS_Store
