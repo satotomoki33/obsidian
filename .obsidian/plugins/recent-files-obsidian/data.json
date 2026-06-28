@@ -1,6 +1,22 @@
 {
   "recentFiles": [
     {
+      "basename": "無題のファイル",
+      "path": "無題のファイル.base"
+    },
+    {
+      "basename": "無題のファイル",
+      "path": "無題のファイル.canvas"
+    },
+    {
+      "basename": "結果",
+      "path": "CPU設計/結果.md"
+    },
+    {
+      "basename": "ロボコン",
+      "path": "ロボコン/ロボコン.md"
+    },
+    {
       "basename": "MF回収",
       "path": "ロボコン/MF回収.md"
     },
@@ -37,20 +53,8 @@
       "path": "Linuxコマンドメモ.md"
     },
     {
-      "basename": "ロボコン",
-      "path": "ロボコン/ロボコン.md"
-    },
-    {
       "basename": "ネットワークセキュリティ",
       "path": "ネットワークセキュリティ実験/ネットワークセキュリティ.md"
-    },
-    {
-      "basename": "無題のファイル",
-      "path": "無題のファイル.canvas"
-    },
-    {
-      "basename": "結果",
-      "path": "CPU設計/結果.md"
     },
     {
       "basename": "実験レポートの補足説明",
@@ -71,10 +75,6 @@
     {
       "basename": "ファイル管理",
       "path": "ファイル管理.base"
-    },
-    {
-      "basename": "無題のファイル",
-      "path": "無題のファイル.base"
     }
   ],
   "omittedPaths": [],
