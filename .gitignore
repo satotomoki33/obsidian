@@ -4,6 +4,7 @@
 .obsidian/graph.json
 .obsidian/cache/
 .obsidian/plugins/recent-files-obsidian/data.json
+.trash/
 
 # OSが生成するゴミファイル
 .DS_Store
