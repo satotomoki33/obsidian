@@ -1,0 +1,17 @@
+{
+  "dailyNoteFolder": "Assistant/Daily",
+  "dailyNoteFormat": "YYYY-MM-DD",
+  "templatePath": "テンプレート/YYYY-MM-DD",
+  "showWareki": true,
+  "showHolidayName": true,
+  "showRokuyo": false,
+  "showKichijitsu": true,
+  "showTenshanichi": true,
+  "showIchiryuManbai": true,
+  "showFujoju": true,
+  "showTooltip": true,
+  "weekStart": 0,
+  "enableAutoInsert": true,
+  "insertFormat": "> [!note] 祝日\n> {name}",
+  "showStatusBar": true
+}
