@@ -8,3 +8,9 @@
 
 # OSが生成するゴミファイル
 .DS_Store
+
+
+
+
+# Ignore Smart Environment folder
+.smart-env
