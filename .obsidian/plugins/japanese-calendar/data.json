@@ -1,6 +1,6 @@
 {
-  "dailyNoteFolder": "Assistant/Daily",
-  "dailyNoteFormat": "YYYY-MM-DD",
+  "dailyNoteFolder": "Daily",
+  "dailyNoteFormat": "YYYY/MM/YYYY-MM-DD",
   "templatePath": "テンプレート/YYYY-MM-DD.md",
   "showWareki": true,
   "showHolidayName": true,
