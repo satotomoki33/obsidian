@@ -22,8 +22,8 @@ Vault直下の `inbox.md` に内容がある場合、以下の手順で処理す
 
 1. `inbox.md` の内容を読む
 2. 内容をタスク、予定、メモ、プロジェクト情報に分解する
-3. 日付があるタスクは `Assistant/Daily/YYYY-MM-DD.md` に追加する
-4. 日付がある予定は `Assistant/Daily/YYYY-MM-DD.md` の `## Schedule` に追加する
+3. 日付があるタスクは `Daily/YYYY/MM/YYYY-MM-DD.md` に追加する
+4. 日付がある予定は `Daily/YYYY/MM/YYYY-MM-DD.md` の `## Schedule` に追加する
 5. 日付がないタスクは、内容から自然に決まるプロジェクトがあればそのプロジェクトのログか未整理欄に移す
 6. 判断に迷う内容は `Assistant/_AI/unresolved.md` に移す
 7. 処理が完了したら `inbox.md` を空にする
@@ -38,7 +38,7 @@ Vault直下の `inbox.md` に内容がある場合、以下の手順で処理す
 Dailyノートは以下の場所に作る。
 
 ```text
-Assistant/Daily/YYYY-MM-DD.md
+Daily/YYYY/MM/YYYY-MM-DD.md
 ```
 
 Dailyノートの基本構成:
@@ -256,7 +256,7 @@ AIがファイルを変更したら、`Assistant/_AI/llm_log.md` に記録する
 ## YYYY-MM-DD
 
 - `inbox.md` からN件整理
-- `Assistant/Daily/YYYY-MM-DD.md` にタスクを追加
+- `Daily/YYYY/MM/YYYY-MM-DD.md` にタスクを追加
 - `Assistant/Projects/<プロジェクト名>/overview.md` を作成
 - `inbox.md` を空にした
 ```

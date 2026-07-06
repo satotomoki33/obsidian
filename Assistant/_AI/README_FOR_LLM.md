@@ -16,7 +16,7 @@ AIは作業前に、必ず以下のファイルを確認する。
 
 AIが編集してよい場所は以下のみ。
 
-- `Assistant/Daily/`
+- `Daily/`
 - `Assistant/Tasks/`
 - `Assistant/Projects/`
 - `Assistant/_AI/`
