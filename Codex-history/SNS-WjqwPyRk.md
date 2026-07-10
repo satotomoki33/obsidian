@@ -1,20 +1,20 @@
 ---
-tags: ["開発", "整理", "ミス", "path/home/sato", "path/home/sato/personal-site/.keep", "path/home/sato/personal-site", "path/home/sato/dev/personal-site/.nojekyll", "path/home/sato/dev/personal-site", "path/home/sato/dev", "path/home/sato/update:-dev/personal-site", "path/home/sato/update:-dev"]
-workspace: "/home/sato"
+tags: ["開発", "整理", "ミス", "path/home/sato/dev/personal-site", "path/home/sato/dev/personal-site/personal-site/.keep", "path/home/sato/dev/personal-site/personal-site", "path/home/sato/dev/personal-site/dev/personal-site/.nojekyll", "path/home/sato/dev/personal-site/dev/personal-site", "path/home/sato/dev/personal-site/dev", "path/home/sato/dev/personal-site/update:-dev/personal-site", "path/home/sato/dev/personal-site/update:-dev"]
+workspace: "/home/sato/dev/personal-site"
 conversation_id: "WjqwPyRkJ8FPVyb1yeykM"
-updated: "2026-07-07T15:43:36.284Z"
+updated: "2026-07-10T10:09:15.672Z"
 ---
 
 # 自分のサイト作りたい 自己紹介 経歴 SNS ブログ みたいな
 
-Tags: #開発 #整理 #ミス #path/home/sato #path/home/sato/personal-site/.keep #path/home/sato/personal-site #path/home/sato/dev/personal-site/.nojekyll #path/home/sato/dev/personal-site #path/home/sato/dev #path/home/sato/update:-dev/personal-site #path/home/sato/update:-dev
+Tags: #開発 #整理 #ミス #path/home/sato/dev/personal-site #path/home/sato/dev/personal-site/personal-site/.keep #path/home/sato/dev/personal-site/personal-site #path/home/sato/dev/personal-site/dev/personal-site/.nojekyll #path/home/sato/dev/personal-site/dev/personal-site #path/home/sato/dev/personal-site/dev #path/home/sato/dev/personal-site/update:-dev/personal-site #path/home/sato/dev/personal-site/update:-dev
 
 - Conversation ID: WjqwPyRkJ8FPVyb1yeykM
-- Codex Session ID: 019f374e-ad66-7d83-bf9c-b78197124747
-- Codex Session Workspace: /home/sato
+- Codex Session ID: 019f4b77-8eb4-7ba2-a9e3-96aa4141d1a6
+- Codex Session Workspace: /home/sato/dev/personal-site
 - Codex Session Version: workspace-c-v1
-- Workspace: /home/sato
-- Updated: 2026-07-07T15:43:36.284Z
+- Workspace: /home/sato/dev/personal-site
+- Updated: 2026-07-10T10:09:15.672Z
 
 ## Conversation
 
@@ -1276,5 +1276,1144 @@ JS構文チェックも `node --check` で通っています。ブラウザで [
 - file_change: update: dev/personal-site/index.html
 - file_change: update: dev/personal-site/script.js
 - file_change: update: dev/personal-site/styles.css
+- status: History exported: /home/sato/obsidian/Codex-history/SNS-WjqwPyRk.md
+
+</details>
+
+### user
+
+もっとリッチでデザイン的なUIにして下さい
+時間がかかっても大丈夫です
+驚くほどのUI
+
+<details>
+<summary>Codex run log</summary>
+
+- status: Codex session reset after editing this message
+
+</details>
+
+### assistant
+
+いまのサイトをベースに、単なる装飾追加ではなく「作品集のように触って楽しい」方向へ全面的にUIを再設計します。まず現状の構成を確認し、既存の内容を保ちながら実装します。方向性を「淡いポートフォリオ」から、深いネイビーに発光アクセントを効かせた“研究・制作ログ”のUIへ切り替えます。大きなタイポグラフィ、グリッド上の情報カード、稼働ステータス、スクロール進行表示まで一体化させます。全面刷新を実装しました。これからHTML/JSの構文確認と、実際のブラウザ表示（PC・モバイル）を見て、崩れや可読性を最後に詰めます。PC表示は狙いどおり確認できました。モバイルではヒーローの軌道グラフィックがタイトルに少し近すぎたため、背景寄りに下げて文字の優先度を上げます。UIを全面刷新しました。
+
+- ダークネイビー×ライムの大胆なビジュアル
+- 軌道するヒーローグラフィックと大きなタイポグラフィ
+- 経歴・SNS・ブログを一貫したエディトリアルUIに再構成
+- スクロール進行バー、表示アニメーション、現在位置ナビ
+- モバイル用レイアウト・メニュー・動きの軽減設定にも対応
+
+更新ファイル:
+
+- [index.html](/home/sato/dev/personal-site/index.html)
+- [styles.css](/home/sato/dev/personal-site/styles.css)
+- [script.js](/home/sato/dev/personal-site/script.js)
+
+`node --check script.js` とChromeでのPC・モバイル表示確認も済んでいます。
+
+<details>
+<summary>Codex run log</summary>
+
+- status: Codex CLI: codex --ask-for-approval never -C /home/sato/dev/personal-site exec --sandbox danger-full-access --skip-git-repo-check --color never --json "<prompt omitted, 8922 chars>"
+- status: Codex thread: 019f4b77-8eb4-7ba2-a9e3-96aa4141d1a6
+- status: Codex turn started
+- command: /bin/bash -lc "pwd && rg --files -g '"'!*node_modules*'"' | sed -n '1,120p' && git status --short"
+- stdout: /home/sato/dev/personal-site
+  README.md
+  script.js
+  index.html
+  styles.css
+  fatal: not a git repository (or any of the parent directories): .git
+  
+- status: Command exited with code 128
+- command: /bin/bash -lc "sed -n '1,260p' index.html && sed -n '1,340p' styles.css && sed -n '1,260p' script.js"
+- stdout: <!doctype html>
+  <html lang="ja">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Sato | Portfolio</title>
+      <meta
+        name="description"
+        content="Satoの自己紹介、経歴、SNS、ブログをまとめた個人サイトです。"
+      />
+      <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body>
+      <div class="ambient" aria-hidden="true"></div>
+      <header class="site-header">
+        <a class="brand" href="#top" aria-label="トップへ戻る">
+          <span class="brand-mark">S</span>
+          <span>Sato</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav id="site-nav" class="site-nav" aria-label="主要ナビゲーション">
+          <a href="#about">自己紹介</a>
+          <a href="#career">経歴</a>
+          <a href="#social">SNS</a>
+          <a href="#blog">ブログ</a>
+        </nav>
+      </header>
+  
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow hero-item">Personal Website</p>
+            <h1 id="hero-title" class="hero-item">作ることと学ぶことを、少しずつ形にする。</h1>
+            <p class="hero-text hero-item">
+              ロボット、組み込み、Linux、ソフトウェア開発に関心があります。
+              日々の学びや制作物、考えたことをここにまとめます。
+            </p>
+            <div class="hero-actions hero-item">
+              <a class="button primary" href="#about">プロフィールを見る</a>
+              <a class="button secondary" href="#blog">最近の記事へ</a>
+            </div>
+          </div>
+          <div class="hero-panel" aria-label="プロフィール概要">
+            <div class="profile-photo" aria-hidden="true"><span>S</span></div>
+            <dl class="quick-facts">
+              <div>
+                <dt>名前</dt>
+                <dd>Sato</dd>
+              </div>
+              <div>
+                <dt>興味</dt>
+                <dd>Robotics / Embedded / Web</dd>
+              </div>
+              <div>
+                <dt>拠点</dt>
+                <dd>Japan</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+  
+        <section id="about" class="section">
+          <div class="section-heading">
+            <p class="eyebrow">About</p>
+            <h2>自己紹介</h2>
+          </div>
+          <div class="text-block">
+            <p>
+              ものづくりと技術学習が好きです。ロボコン関連の開発、マイコン、
+              Linux環境での作業、授業や個人開発で得た知識を整理しながら、
+              使える形に落とし込むことを大切にしています。
+            </p>
+            <p>
+              このサイトでは、これまでの活動、触っている技術、SNS、ブログ記事をまとめます。
+              プロフィール文や実績はいつでも差し替えられる構成にしています。
+            </p>
+          </div>
+        </section>
+  
+        <section id="career" class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Career</p>
+            <h2>経歴</h2>
+          </div>
+          <ol class="timeline">
+            <li>
+              <time datetime="2026">2026</time>
+              <div>
+                <h3>ロボット開発・制御の学習</h3>
+                <p>経路生成、上位シーケンス、認識まわりなど、ロボコンに関わる開発を継続。</p>
+              </div>
+            </li>
+            <li>
+              <time datetime="2025">2025</time>
+              <div>
+                <h3>組み込み・Linux環境の利用</h3>
+                <p>STM32、Arduino、Linuxコマンド、開発環境整備などを学習。</p>
+              </div>
+            </li>
+            <li>
+              <time datetime="2024">2024</time>
+              <div>
+                <h3>ソフトウェア基礎の学習</h3>
+                <p>授業・演習・個人メモを通して、プログラミングや情報系科目の基礎を整理。</p>
+              </div>
+            </li>
+          </ol>
+        </section>
+  
+        <section id="social" class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Social</p>
+            <h2>SNS</h2>
+          </div>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/" target="_blank" rel="noreferrer">
+              <span class="link-icon">GH</span>
+              <span>
+                <strong>GitHub</strong>
+                <small>コードや制作物</small>
+              </span>
+            </a>
+            <a class="link-card" href="https://x.com/" target="_blank" rel="noreferrer">
+              <span class="link-icon">X</span>
+              <span>
+                <strong>X</strong>
+                <small>日々のメモ</small>
+              </span>
+            </a>
+            <a class="link-card" href="mailto:hello@example.com">
+              <span class="link-icon">@</span>
+              <span>
+                <strong>Mail</strong>
+                <small>連絡先</small>
+              </span>
+            </a>
+          </div>
+        </section>
+  
+        <section id="blog" class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Blog</p>
+            <h2>ブログ</h2>
+          </div>
+          <div class="blog-list">
+            <article class="post-card">
+              <p class="post-meta">2026.07.06</p>
+              <h3><a href="#">個人サイトを作り始めた</a></h3>
+              <p>プロフィール、経歴、SNS、ブログを1ページにまとめるための最初の記事。</p>
+            </article>
+            <article class="post-card">
+              <p class="post-meta">2026.06.30</p>
+              <h3><a href="#">Linuxコマンドのメモを整理する</a></h3>
+              <p>よく使うコマンドや開発環境の設定を、自分用に見返しやすくまとめる。</p>
+            </article>
+            <article class="post-card">
+              <p class="post-meta">2026.06.23</p>
+              <h3><a href="#">ロボコン開発で考えたこと</a></h3>
+              <p>制御、経路、上位シーケンスなど、実装中に詰まった点と学びを書く。</p>
+            </article>
+          </div>
+        </section>
+      </main>
+  
+      <footer class="site-footer">
+        <p>&copy; 2026 Sato</p>
+        <a href="#top">Back to top</a>
+      </footer>
+  
+      <script src="./script.js"></script>
+    </body>
+  </html>
+  :root {
+    color-scheme: light;
+    --bg: #f6f3ee;
+    --surface: #fffdf8;
+    --ink: #20201d;
+    --muted: #66635c;
+    --line: #ded8ce;
+    --accent: #16615d;
+    --accent-strong: #0e4845;
+    --warm: #cf6f3f;
+    --shadow: 0 20px 55px rgba(31, 29, 25, 0.12);
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    position: relative;
+    margin: 0;
+    background:
+      radial-gradient(circle at top left, rgba(207, 111, 63, 0.12), transparent 32rem),
+      linear-gradient(180deg, #fbf9f4 0%, var(--bg) 42%, #eef4f2 100%);
+    color: var(--ink);
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .ambient {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(22, 97, 93, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(22, 97, 93, 0.05) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: linear-gradient(180deg, black 0%, transparent 82%);
+    animation: grid-drift 18s linear infinite;
+  }
+  
+  .ambient::before,
+  .ambient::after {
+    position: absolute;
+    width: 28rem;
+    height: 28rem;
+    border-radius: 50%;
+    content: "";
+    filter: blur(12px);
+    opacity: 0.26;
+    transform: translate3d(0, 0, 0);
+  }
+  
+  .ambient::before {
+    top: 8%;
+    right: 8%;
+    background: radial-gradient(circle, rgba(22, 97, 93, 0.32), transparent 68%);
+    animation: float-slow 14s var(--ease) infinite alternate;
+  }
+  
+  .ambient::after {
+    bottom: 12%;
+    left: 4%;
+    background: radial-gradient(circle, rgba(207, 111, 63, 0.28), transparent 68%);
+    animation: float-slow 18s var(--ease) infinite alternate-reverse;
+  }
+  
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem clamp(1rem, 4vw, 3rem);
+    border-bottom: 1px solid rgba(222, 216, 206, 0.75);
+    background: rgba(251, 249, 244, 0.86);
+    backdrop-filter: blur(18px);
+  }
+  
+  .brand,
+  .site-nav {
+    display: flex;
+    align-items: center;
+  }
+  
+  .brand {
+    gap: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+  
+  .brand-mark {
+    display: grid;
+    width: 2.3rem;
+    height: 2.3rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 1rem;
+    animation: mark-pulse 4.8s var(--ease) infinite;
+  }
+  
+  .site-nav {
+    gap: clamp(0.8rem, 2.4vw, 1.6rem);
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  
+  .site-nav a:hover,
+  .site-nav a:focus-visible {
+    color: var(--accent);
+  }
+  
+  .site-nav a {
+    position: relative;
+    transition: color 180ms ease;
+  }
+  
+  .site-nav a::after {
+    position: absolute;
+    right: 0;
+    bottom: -0.35rem;
+    left: 0;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--warm);
+    content: "";
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms var(--ease);
+  }
+  
+  .site-nav a:hover::after,
+  .site-nav a:focus-visible::after,
+  .site-nav a.is-active::after {
+    transform: scaleX(1);
+  }
+  
+  .nav-toggle {
+    display: none;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+  
+  .nav-toggle span {
+    display: block;
+    width: 1.2rem;
+    height: 2px;
+    margin: 0.24rem auto;
+    background: var(--ink);
+  }
+  
+  main {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+  
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    min-height: calc(100svh - 76px);
+    padding: clamp(3rem, 8vw, 6rem) 0;
+    perspective: 1200px;
+  }
+  
+  .hero-item {
+    animation: rise-in 760ms var(--ease) both;
+  }
+  
+  .hero-item:nth-child(2) {
+    animation-delay: 110ms;
+  }
+  
+  .hero-item:nth-child(3) {
+    animation-delay: 210ms;
+  }
+  
+  .hero-item:nth-child(4) {
+    animation-delay: 310ms;
+  }
+  
+  .eyebrow {
+    margin: 0 0 0.55rem;
+    color: var(--warm);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+  
+  h1 {
+    max-width: 11ch;
+    margin-bottom: 1.2rem;
+    font-size: clamp(2.65rem, 7vw, 5.8rem);
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+  
+  h2 {
+    margin-bottom: 0;
+    font-size: clamp(1.8rem, 3vw, 2.45rem);
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+  
+  h3 {
+    margin-bottom: 0.35rem;
+    font-size: 1.08rem;
+    line-height: 1.45;
+  }
+  
+  .hero-text {
+    max-width: 42rem;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.5vw, 1.16rem);
+  }
+  
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.8rem;
+  }
+  
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.9rem;
+    padding: 0.75rem 1.1rem;
+    border-radius: 8px;
+    font-weight: 800;
+    line-height: 1.2;
+    transition:
+      transform 180ms var(--ease),
+      box-shadow 180ms var(--ease),
+      background 180ms ease,
+      border-color 180ms ease;
+  }
+  
+  .button.primary {
+    position: relative;
+    overflow: hidden;
+    background: var(--accent);
+    color: white;
+  }
+  
+  .button.primary::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.28) 45%, transparent 70%);
+    content: "";
+    transform: translateX(-120%);
+  }
+  
+  .button.primary:hover {
+    background: var(--accent-strong);
+  }
+  
+  .button.primary:hover::after {
+    animation: sheen 760ms ease;
+  }
+  
+  .button:hover {
+    box-shadow: 0 12px 28px rgba(31, 29, 25, 0.12);
+    transform: translateY(-2px);
+  }
+  
+  .button.secondary {
+    border: 1px solid var(--line);
+    background: rgba(255, 253, 248, 0.72);
+  }
+  
+  .hero-panel {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    padding: 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 253, 248, 0.82);
+    box-shadow: var(--shadow);
+    transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+    transform-style: preserve-3d;
+    transition:
+      transform 260ms var(--ease),
+      box-shadow 260ms var(--ease);
+    animation: panel-in 900ms var(--ease) 180ms both;
+  }
+  
+  .hero-panel:hover {
+    box-shadow: 0 28px 70px rgba(31, 29, 25, 0.17);
+  }
+  
+  .profile-photo {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    min-height: 320px;
+    place-items: center;
+    border-radius: 6px;
+    background:
+      linear-gradient(145deg, rgba(22, 97, 93, 0.9), rgba(207, 111, 63, 0.82)),
+      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0 10px, transparent 10px 20px);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: clamp(5rem, 18vw, 10rem);
+    font-weight: 900;
+    transform: translateZ(34px);
+  }
+  const navToggle = document.querySelector(".nav-toggle");
+  const siteNav = document.querySelector(".site-nav");
+  const heroPanel = document.querySelector(".hero-panel");
+  const navLinks = [...document.querySelectorAll(".site-nav a")];
+  const sections = [...document.querySelectorAll("section[id]")];
+  
+  navToggle?.addEventListener("click", () => {
+    const isOpen = siteNav.classList.toggle("is-open");
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+  
+  siteNav?.addEventListener("click", (event) => {
+    if (event.target instanceof HTMLAnchorElement) {
+      siteNav.classList.remove("is-open");
+      navToggle?.setAttribute("aria-expanded", "false");
+    }
+  });
+  
+  const revealTargets = document.querySelectorAll(
+    ".section, .timeline li, .link-card, .post-card, .text-block",
+  );
+  
+  revealTargets.forEach((target) => target.classList.add("reveal"));
+  
+  if ("IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
+    );
+  
+    revealTargets.forEach((target) => revealObserver.observe(target));
+  
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+  
+          navLinks.forEach((link) => {
+            link.classList.toggle("is-active", link.getAttribute("href") === `#${entry.target.id}`);
+          });
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 },
+    );
+  
+    sections.forEach((section) => navObserver.observe(section));
+  } else {
+    revealTargets.forEach((target) => target.classList.add("is-visible"));
+  }
+  
+  heroPanel?.addEventListener("pointermove", (event) => {
+    const rect = heroPanel.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+  
+    heroPanel.style.setProperty("--tilt-x", `${y * -7}deg`);
+    heroPanel.style.setProperty("--tilt-y", `${x * 8}deg`);
+  });
+  
+  heroPanel?.addEventListener("pointerleave", () => {
+    heroPanel.style.setProperty("--tilt-x", "0deg");
+    heroPanel.style.setProperty("--tilt-y", "0deg");
+  });
+  
+- status: Command exited with code 0
+- command: /bin/bash -lc "sed -n '341,720p' styles.css"
+- stdout: 
+  .profile-photo span {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .profile-photo::before {
+    position: absolute;
+    inset: -30%;
+    background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.24), transparent 32%);
+    content: "";
+    animation: rotate-light 7s linear infinite;
+    pointer-events: none;
+  }
+  
+  .profile-photo::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 15%, rgba(255, 255, 255, 0.18) 48%, transparent 70%);
+    content: "";
+    transform: translateX(-120%);
+    animation: sweep 4.6s ease-in-out infinite;
+    pointer-events: none;
+  }
+  
+  .quick-facts {
+    margin: 1rem 0 0;
+  }
+  
+  .quick-facts div {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--line);
+  }
+  
+  .quick-facts dt {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+  
+  .quick-facts dd {
+    margin: 0;
+    font-weight: 800;
+  }
+  
+  .section {
+    display: grid;
+    grid-template-columns: 0.36fr 0.64fr;
+    gap: clamp(1.5rem, 5vw, 4rem);
+    padding: clamp(3rem, 7vw, 5.5rem) 0;
+    border-top: 1px solid var(--line);
+  }
+  
+  .section-heading {
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+  
+  .text-block {
+    max-width: 45rem;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  
+  .timeline {
+    display: grid;
+    gap: 1.1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .timeline li {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 1.2rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  
+  .timeline time {
+    color: var(--accent);
+    font-weight: 900;
+  }
+  
+  .timeline p,
+  .post-card p {
+    margin-bottom: 0;
+    color: var(--muted);
+  }
+  
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  
+  .link-card {
+    display: flex;
+    min-height: 8rem;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms var(--ease),
+      transform 180ms var(--ease);
+  }
+  
+  .link-card:hover {
+    border-color: rgba(22, 97, 93, 0.5);
+    box-shadow: 0 16px 34px rgba(31, 29, 25, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .link-icon {
+    display: grid;
+    flex: 0 0 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border-radius: 50%;
+    background: #e7efec;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 900;
+  }
+  
+  .link-card strong,
+  .link-card small {
+    display: block;
+  }
+  
+  .link-card small {
+    color: var(--muted);
+  }
+  
+  .blog-list {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .post-card {
+    padding: 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms var(--ease),
+      transform 180ms var(--ease);
+  }
+  
+  .post-card:hover {
+    border-color: rgba(207, 111, 63, 0.45);
+    box-shadow: 0 16px 34px rgba(31, 29, 25, 0.1);
+    transform: translateY(-3px);
+  }
+  
+  .post-card a:hover {
+    color: var(--accent);
+  }
+  
+  .post-meta {
+    color: var(--warm);
+    font-size: 0.84rem;
+    font-weight: 900;
+  }
+  
+  .site-footer {
+    display: flex;
+    width: min(1120px, calc(100% - 2rem));
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 auto;
+    padding: 2.2rem 0 3rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+  }
+  
+  .site-footer a {
+    color: var(--accent);
+    font-weight: 800;
+  }
+  
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 680ms var(--ease),
+      transform 680ms var(--ease);
+  }
+  
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .timeline li.reveal:nth-child(2),
+  .link-card.reveal:nth-child(2),
+  .post-card.reveal:nth-child(2) {
+    transition-delay: 90ms;
+  }
+  
+  .timeline li.reveal:nth-child(3),
+  .link-card.reveal:nth-child(3),
+  .post-card.reveal:nth-child(3) {
+    transition-delay: 180ms;
+  }
+  
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(32px) rotateX(5deg);
+    }
+  
+    to {
+      opacity: 1;
+      transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+    }
+  }
+  
+  @keyframes grid-drift {
+    from {
+      background-position: 0 0;
+    }
+  
+    to {
+      background-position: 42px 42px;
+    }
+  }
+  
+  @keyframes float-slow {
+    from {
+      transform: translate3d(-1rem, -0.5rem, 0) scale(0.96);
+    }
+  
+    to {
+      transform: translate3d(1.4rem, 1rem, 0) scale(1.05);
+    }
+  }
+  
+  @keyframes mark-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(22, 97, 93, 0.22);
+    }
+  
+    50% {
+      box-shadow: 0 0 0 8px rgba(22, 97, 93, 0);
+    }
+  }
+  
+  @keyframes rotate-light {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes sweep {
+    0%,
+    40% {
+      transform: translateX(-120%);
+    }
+  
+    68%,
+    100% {
+      transform: translateX(120%);
+    }
+  }
+  
+  @keyframes sheen {
+    to {
+      transform: translateX(120%);
+    }
+  }
+  
+  @media (max-width: 780px) {
+    .nav-toggle {
+      display: block;
+    }
+  
+    .site-nav {
+      position: absolute;
+      top: calc(100% + 1px);
+      right: 1rem;
+      left: 1rem;
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: 0 18px 40px rgba(31, 29, 25, 0.12);
+    }
+  
+    .site-nav.is-open {
+      display: flex;
+    }
+  
+    .site-nav a {
+      padding: 0.75rem;
+    }
+  
+    .hero,
+    .section {
+      grid-template-columns: 1fr;
+    }
+  
+    .hero {
+      min-height: auto;
+    }
+  
+    h1 {
+      max-width: 12ch;
+    }
+  
+    .section-heading {
+      position: static;
+    }
+  
+    .link-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 520px) {
+    main,
+    .site-footer {
+      width: min(100% - 1.2rem, 1120px);
+    }
+  
+    .site-header {
+      padding-inline: 0.75rem;
+    }
+  
+    .hero-actions,
+    .site-footer {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  
+    .button {
+      width: 100%;
+    }
+  
+    .profile-photo {
+      min-height: 240px;
+    }
+  
+    .timeline li,
+    .quick-facts div {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+  
+- status: Command exited with code 0
+- command: /bin/bash -lc "sed -n '721,780p' styles.css"
+- stdout:   *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  
+- status: Command exited with code 0
+- command: /bin/bash -lc 'node --check script.js && (command -v google-chrome || command -v chromium || command -v chromium-browser) && python3 -m http.server 4173 >/tmp/personal-site-http.log 2>&1 & echo $!'
+- stdout: 83124
+  
+- status: Command exited with code 0
+- command: /bin/bash -lc 'for browser in google-chrome chromium chromium-browser firefox; do command -v "$browser" && break; done; curl -sI http://127.0.0.1:4173/ | head -n 1'
+- stdout: /usr/bin/google-chrome
+  
+- status: Command exited with code 0
+- command: /bin/bash -lc 'google-chrome --headless --no-sandbox --disable-gpu --screenshot=/tmp/personal-site-desktop.png --window-size=1440,1100 http://127.0.0.1:4173 && google-chrome --headless --no-sandbox --disable-gpu --screenshot=/tmp/personal-site-mobile.png --window-size=390,844 http://127.0.0.1:4173'
+- stdout: 28939 bytes written to file /tmp/personal-site-desktop.png
+  23896 bytes written to file /tmp/personal-site-mobile.png
+  
+- status: Command exited with code 0
+- command: /bin/bash -lc 'google-chrome --headless --no-sandbox --disable-gpu --screenshot=/tmp/personal-site-desktop.png --window-size=1440,1100 file:///home/sato/dev/personal-site/index.html && google-chrome --headless --no-sandbox --disable-gpu --screenshot=/tmp/personal-site-mobile.png --window-size=390,844 file:///home/sato/dev/personal-site/index.html'
+- stdout: 983351 bytes written to file /tmp/personal-site-desktop.png
+  344438 bytes written to file /tmp/personal-site-mobile.png
+  
+- status: Command exited with code 0
+- command: /bin/bash -lc 'node --check script.js && google-chrome --headless --no-sandbox --disable-gpu --virtual-time-budget=2500 --screenshot=/tmp/personal-site-mobile-final.png --window-size=390,844 file:///home/sato/dev/personal-site/index.html'
+- stdout: 352418 bytes written to file /tmp/personal-site-mobile-final.png
+  
+- status: Command exited with code 0
+- status: tokens used: {"input_tokens":476086,"cached_input_tokens":362496,"output_tokens":10470,"reasoning_output_tokens":741}
+- status: Codex exited with code 0
+- file_change: add: index.html
+- file_change: add: script.js
+- file_change: add: styles.css
+- file_change: update: styles.css
+- status: History exported: /home/sato/obsidian/Codex-history/SNS-WjqwPyRk.md
+
+</details>
+
+### user
+
+UIめっちゃ凄いけどそのわりにコードの行数が少ないのはなぜ？
+
+### assistant
+
+CSSをかなり圧縮して1行に詰めて書いているからです。実際の処理量が少ないわけではなく、改行・空白・コメントを省いた結果、行数が短く見えます。
+
+今回の見た目は特に、画像ではなくCSSだけで作っています。
+
+- グリッド背景、ノイズ、発光、軌道 → CSSのグラデーション・疑似要素
+- 円形のメインビジュアル → `border-radius` とアニメーション
+- カード・タイムライン → Grid / Flexbox
+- スクロール出現、ナビ追従、進捗バー → 小さなJavaScript
+
+つまり「デザイン要素を画像ファイルや大量のDOMで増やしていない」ので、構造自体は意外とコンパクトです。
+
+ただ、保守性の面では圧縮されたCSSは編集しづらいです。必要なら見やすい整形版に直せます。
+
+<details>
+<summary>Codex run log</summary>
+
+- status: Codex CLI: codex --ask-for-approval never -C /home/sato/dev/personal-site exec --sandbox danger-full-access resume --skip-git-repo-check --json 019f4b77-8eb4-7ba2-a9e3-96aa4141d1a6 "<prompt omitted, 30 chars>"
+- status: Codex thread: 019f4b77-8eb4-7ba2-a9e3-96aa4141d1a6
+- status: Codex turn started
+- status: tokens used: {"input_tokens":514498,"cached_input_tokens":399104,"output_tokens":10703,"reasoning_output_tokens":741}
+- status: Codex exited with code 0
+- status: History exported: /home/sato/obsidian/Codex-history/SNS-WjqwPyRk.md
+
+</details>
+
+### user
+
+整形して
+
+### assistant
+
+読みやすさを優先して、見た目と挙動は変えずにHTML/CSS/JSを整形します。まず利用できるフォーマッタを確認し、なければ安全な範囲で手作業の整形を行います。CSSだけが圧縮状態なので、整形ツールで展開します。レイアウトや値は変更せず、改行・インデント・宣言順の見やすさだけを直します。整形しました。見た目・機能は変えず、読みやすい改行とインデントにしています。
+
+- [index.html](/home/sato/dev/personal-site/index.html)
+- [styles.css](/home/sato/dev/personal-site/styles.css)
+- [script.js](/home/sato/dev/personal-site/script.js)
+
+CSSは5行 → 796行になり、編集しやすくなりました。JS構文チェックも通っています。
+
+<details>
+<summary>Codex run log</summary>
+
+- status: Codex CLI: codex --ask-for-approval never -C /home/sato/dev/personal-site exec --sandbox danger-full-access resume --skip-git-repo-check --json 019f4b77-8eb4-7ba2-a9e3-96aa4141d1a6 "<prompt omitted, 4 chars>"
+- status: Codex thread: 019f4b77-8eb4-7ba2-a9e3-96aa4141d1a6
+- status: Codex turn started
+- command: /bin/bash -lc "command -v prettier || true; node -e \"try { console.log(require.resolve('prettier')) } catch { process.exit(0) }\"; wc -l index.html styles.css script.js"
+- stdout:   119 index.html
+      5 styles.css
+     49 script.js
+    173 total
+  
+- status: Command exited with code 0
+- command: /bin/bash -lc 'npx --yes prettier@3.5.3 --write index.html styles.css script.js && wc -l index.html styles.css script.js && node --check script.js'
+- stdout: index.html 99ms
+  styles.css 119ms
+  script.js 87ms
+    244 index.html
+    796 styles.css
+     62 script.js
+   1102 total
+  
+- status: Command exited with code 0
+- status: tokens used: {"input_tokens":631210,"cached_input_tokens":511488,"output_tokens":11267,"reasoning_output_tokens":891}
+- status: Codex exited with code 0
 
 </details>
