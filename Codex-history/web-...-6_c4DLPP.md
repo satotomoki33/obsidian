@@ -23,7 +23,7 @@
 
 Web上の `rotate()` を、実機では「速度制御で一定角速度回転 → 角度しきい値到達 → 一定時間停止」に置き換える。
 
-今の実装に近いのは [aruco_rotate_puls.html](/home/sato/robocon/AR_rotate/aruco_rotate_puls.html) の方式です。  
+今の実装に近いのは [aruco_rotate_puls.html](file/home/sato/robocon/AR_rotate/aruco_rotate_puls.html|file/home/sato/robocon/AR_rotate/aruco_rotate_puls.html) の方式です。  
 45度ずつ回して、必要回数だけパルス的に送る設計。
 
 **仕様案**

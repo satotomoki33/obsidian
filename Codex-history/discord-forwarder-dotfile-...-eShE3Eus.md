@@ -1259,7 +1259,8 @@ desktop-file-validate /tmp/discord-forwarder.desktop
   /home/sato/dotfiles/.git/FETCH_HEAD
   b0966f5dcca2c02da495cc7e11307401e89ae5a2		branch 'main' of https://github.com/satotomoki33/dotfiles
   /home/sato/dotfiles/.git/index
-  DIRC      iW��c�iW��c�  ���  ��  �  �  �`{o���b� ;֪����C 	README.md iW�W"F�iV�a(��r  ��r  ��  �  �  �]��1��63KdB���M�� config/xremap/config.yml  iW�C;YpiW�C;Yp  ���  ��  �  �  +�W�t���Vb��<�GB� 
+  DIRC      iW��c�iW��c�  ���  ��  �  �  �`{o���b� ;֪����C 	README.md iW�W"F�iV�a(��r  ��r  ��  �  �  �]��1��63
+KdB���M�� config/xremap/config.yml  iW�C;YpiW�C;Yp  ���  ��  �  �  +�W�t���Vb��<�GB� 
   install.sh        iW��)�giW��)�g  ���  ��  �  �   W\}kO��1�����1{�<k��j system/99-xremap.rules    iW���'�iW���'�  ���  ��  �  �   ��I�EWo��ν��ŀ�#* system/xremap.service     TREE   v 5 2
   ����c\��vq���DZ�+config 1 1
   {�%.��s��E)@�c�GExremap 1 0
