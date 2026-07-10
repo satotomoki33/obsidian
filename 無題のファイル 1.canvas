@@ -1,7 +1,0 @@
-{
-	"nodes":[
-		{"id":"eaa37616faa2d742","type":"file","file":"無題のファイル.base","x":-200,"y":-80,"width":280,"height":220},
-		{"id":"c9dc483293859369","x":80,"y":-260,"width":400,"height":400,"type":"file","file":"形式言語論1.md"}
-	],
-	"edges":[]
-}
