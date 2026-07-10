@@ -7,7 +7,7 @@
 		{"id":"robocon","type":"file","file":"ロボコン/ロボコン.md","x":560,"y":-300,"width":360,"height":240,"color":"3"},
 		{"id":"dev","type":"text","text":"# Development\n\n- [[開発/codex chat]]\n- [[開発/Discord-forwarder]]\n- [[Linuxコマンドメモ]]","x":560,"y":20,"width":360,"height":220,"color":"6"},
 		{"id":"study","type":"text","text":"# Classes / Study\n\n- [[形式言語論1]]\n- [[線形代数]]\n- [[日本語学特論]]\n- [[マイクロプロセッサ]]","x":120,"y":360,"width":420,"height":240,"color":"2"},
-		{"id":"experiments","type":"text","text":"# Labs / Reports\n\n- [[CPU設計/結果]]\n- [[ネットワークセキュリティ実験/ネットワークセキュリティ]]\n- [[ネットワークセキュリティ実験/実験レポートの補足説明]]\n- [[ソフトウェア演習2B/テンプレ]]","x":-420,"y":420,"width":440,"height":260,"color":"1"},
+		{"id":"experiments","type":"text","text":"# Labs / Reports\n\n- [[結果]]\n- [[ネットワークセキュリティ]]\n- [[実験レポートの補足説明]]\n- [[テンプレ]]","x":-420,"y":420,"width":440,"height":260,"color":"1"},
 		{"id":"review","type":"text","text":"# Weekly Review\n\n1. [[inbox]] を空に近づける\n2. [[Assistant/Tasks/upcoming|Upcoming tasks]] を確認\n3. ロボコン・開発・授業の次アクションを1つずつ決める\n4. 不要なCanvasカードを整理","x":-40,"y":700,"width":560,"height":240,"color":"4"}
 	],
 	"edges":[
