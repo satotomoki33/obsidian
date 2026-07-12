@@ -1,3 +1,5 @@
+
+
 feat/dog3-add-controller-mode/sto
 
 * [ ] 手動キーコン
@@ -7,12 +9,41 @@ feat/dog3-add-controller-mode/sto
 	* [x] 上段配置用セマフォのAPI ✅ 2026-07-11
 		* [x] 一旦bool をpublish してみる ✅ 2026-07-11
 	* [ ] 手動キーコン実装
+		* [x] 多分...?? ✅ 2026-07-12
+		* [x] 玄米さんとコマンド系合わせる ✅ 2026-07-13
+			* [x] ar ✅ 2026-07-13
 	* [ ] 合体シーケンス
 		* [x] Aruco付け足した ✅ 2026-07-10
+		* [ ] arコマンド治す
 		* feat/dog3-manual-docking-sequence/sto
 	* [ ] 自動キーコンをきめる
 	* [x] Kfs_collectをABU用にする(0を消して600追加) ✅ 2026-07-09
 
+相手がマージされた後：
+
+```
+git fetch origin
+git switch feat/mine
+git rebase --onto origin/main dependency-base feat/mine
+```
+
+
+> [!NOTE]- 相手のブランチが更新された場合
+> 自分が作業している間に相手が追加コミットを積んだら、自分のブランチを再度その上へ載せ替えます。
+> 
+> ```
+> git fetch origin
+> git switch feat/mine
+> git rebase origin/feat/other
+> ```
+> 
+> 成功した後、境界を最新位置に更新します。
+> 
+> ```
+> git branch -f dependency-base origin/feat/other
+> ```
+> 
+> これを、相手のPRがマージされるまで必要に応じて行います。
 
 モードは３モード
 十字キーで変えるのは道場とアリーナ
@@ -112,15 +143,18 @@ TOP配置トリガー
 | X          | 合体指示              |
 | Y          | 上段トリガー            |
 | M1(M2)＋B   | ブックハンド秘伝書棚下段シーケンス |
-| M1(M2)＋A   | 再回収               |
+| M1(M2)＋A   | 再回収シーケンス          |
 | L1押し込み中    | 情報伝達モード           |
 | L1＋X       | 中段左スロット配置指示(ar)   |
 | L1＋Y       | 中段中央スロット配置指示(ar)  |
 | L1＋B       | 中段右スロット配置指示(ar)   |
-| L1＋A       |                   |
+| L1＋A       | 再回収コマンド           |
 | R1 / R2＋R1 | 合体 / 合体解除         |
 | BACKボタン    | 自動モードトグル          |
 | 十字左 / 右    | モード切替（道場⇔アリーナ）    |
+
+### 自動キーコン
+
 
 ## 4.1号機
 
