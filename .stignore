@@ -1,0 +1,20 @@
+// Obsidianの端末固有の画面・タブ配置
+(?d).obsidian/workspace.json
+(?d).obsidian/workspace-mobile.json
+
+// Recent Filesプラグインの閲覧履歴・端末別設定
+(?d).obsidian/plugins/recent-files-obsidian/data.json
+
+// Obsidian Gitプラグインの端末別設定
+.obsidian/plugins/obsidian-git/data.json
+
+// Gitの内部管理データ
+.git
+
+// OSが自動生成する不要ファイル
+(?d).DS_Store
+(?d)(?i)Thumbs.db
+(?d)(?i)desktop.ini
+
+// Obsidianのゴミ箱は端末ごとに保持
+(?d).trash
