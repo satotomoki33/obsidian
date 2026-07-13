@@ -5,6 +5,8 @@
 - 教員: 加藤 三保子
 - 教室: A-205
 
+[eラーニング ログイン用URL](https://student.alcnaplus.jp/tutBS/login)
+テスト [[2026-07-31]]
 ## メモ
 
 もちろんです。第4段落（**Through creative methods...** から **business opportunity.** まで）です。
