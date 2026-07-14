@@ -1,0 +1,21 @@
+/* チェック済みタスクの取り消し線を本文と同じ色にする */
+.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task="x"],
+.markdown-rendered li[data-task="x"] {
+  color: var(--text-normal);
+  text-decoration-color: var(--text-normal);
+}
+
+/* チェックボックスの四角い輪郭を本文と同じ色にする */
+input[type="checkbox"] {
+  border-color: var(--text-normal) !important;
+}
+
+/* 未チェック状態の背景を透明にする */
+input[type="checkbox"]:not(:checked) {
+  background-color: transparent !important;
+}
+
+/* チェック後も枠線を本文色にする */
+input[type="checkbox"]:checked {
+  border-color: var(--text-normal) !important;
+}

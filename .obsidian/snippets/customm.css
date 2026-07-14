@@ -1,171 +1,87 @@
-/* =====================================================
-   Origami Theme Custom Typography
-   ===================================================== */
-
-/*
-  FrauncesをGoogle Fontsから読み込む
-  インターネット接続なしでも使いたい場合は、
-  FrauncesをPCへインストールして、この行を削除してOK
-*/
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap");
 
 
-/* -----------------------------------------------------
-   ノート上部のインラインタイトル
-   Markdownの「# H1」には影響しない
-   ----------------------------------------------------- */
+/* 薄めのアクセントカラー */
+body {
+  --heading-accent:
+    color-mix(
+      in srgb,
+      var(--text-accent) 72%,
+      var(--background-primary)
+    );
 
+  --title-accent:
+    color-mix(
+      in srgb,
+      var(--text-accent) 82%,
+      var(--background-primary)
+    );
+}
+
+/* ノート上部のタイトル */
 .inline-title {
   font-family:
-    "Fraunces",
+    "Dela Gothic One",
     "Noto Sans JP",
-    "Yu Gothic",
-    "YuGothic",
     sans-serif !important;
 
-  font-size: 4em !important;
-  font-weight: 850 !important;
-  line-height: 1.05 !important;
+  font-size: 3.5em !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.035em;
 
-  /* Fraunces特有の、丸く柔らかい雰囲気 */
-  font-variation-settings:
-    "opsz" 120,
-    "SOFT" 100,
-    "WONK" 1 !important;
-
-  letter-spacing: -0.045em;
-  color: var(--text-accent) !important;
+  color: var(--title-accent) !important;
 
   margin-top: 0.2em;
   margin-bottom: 0.45em;
 
-  /* 少しだけ、ぷっくり感を追加 */
+  /* ほんの少しぷっくり */
   text-shadow:
-    0 1px 0 color-mix(in srgb, var(--text-accent) 65%, white),
-    0 3px 10px color-mix(in srgb, var(--text-accent) 20%, transparent);
+    0 2px 0 color-mix(
+      in srgb,
+      var(--title-accent) 30%,
+      transparent
+    );
 }
 
-
-/* -----------------------------------------------------
-   H1〜H6見出し
-   ----------------------------------------------------- */
-
-/* リーディングビュー */
+/* Markdown見出し */
 .markdown-rendered h1,
 .markdown-rendered h2,
 .markdown-rendered h3,
 .markdown-rendered h4,
 .markdown-rendered h5,
 .markdown-rendered h6,
-
-/* ライブプレビュー */
-.markdown-source-view.mod-cm6 .HyperMD-header {
-  color: var(--text-accent) !important;
-  font-weight: 750 !important;
-}
-
-
-/* 見出しの文字部分を確実にアクセントカラーへ */
+.markdown-source-view.mod-cm6 .HyperMD-header,
 .markdown-source-view.mod-cm6 .HyperMD-header span {
-  color: var(--text-accent) !important;
+  font-family:
+    "Fredoka",
+    "M PLUS Rounded 1c",
+    "Noto Sans JP",
+    sans-serif !important;
+
+  color: var(--heading-accent) !important;
+  font-weight: 650 !important;
 }
 
-
-/* -----------------------------------------------------
-   本文
-   ダークモードで白にする
-   ----------------------------------------------------- */
-
+/* ダークモードの本文 */
 .theme-dark .markdown-source-view,
 .theme-dark .markdown-preview-view {
   --text-normal: #ffffff;
-  --text-muted: #d3d3d3;
+  --text-muted: #d8d8d8;
   --text-faint: #aaaaaa;
 }
 
-
-/* 編集画面の本文 */
-.theme-dark .markdown-source-view.mod-cm6 .cm-line {
-  color: var(--text-normal);
-}
-
-
-/* 閲覧画面の本文 */
-.theme-dark .markdown-rendered p,
-.theme-dark .markdown-rendered li {
-  color: var(--text-normal);
-}
-
-
-/* -----------------------------------------------------
-   太字
-   ----------------------------------------------------- */
-
-/* リーディングビュー */
+/* 太字 */
 .markdown-rendered strong,
-
-/* ライブプレビュー */
 .markdown-source-view.mod-cm6 .cm-strong {
   font-weight: 750 !important;
   color: inherit;
 }
 
-
-/* -----------------------------------------------------
-   スマホではタイトルが大きすぎないよう調整
-   ----------------------------------------------------- */
-
+/* スマホ */
 .is-mobile .inline-title {
   font-size: 3em !important;
-  line-height: 1.1 !important;
 }
 
-/* =========================
-   Origami コードブロック改善
-   ========================= */
 
-/* 閲覧モードのコードブロック */
-.markdown-rendered pre {
-  background-color: #16181d !important;
-  border: 1px solid #3a3f4b !important;
-  border-radius: 8px !important;  
-  padding: 1.1em 1.2em !important;
-}
 
-/* 閲覧モードのコード文字 */
-.markdown-rendered pre code {
-  color: #d8dee9 !important;
-  background-color: transparent !important;
-  font-size: 0.92em;
-  line-height: 1.6;
-}
-
-/* 編集モードのコードブロック */
-.markdown-source-view.mod-cm6 .HyperMD-codeblock {
-  background-color: #16181d !important;
-  color: #d8dee9 !important;
-}
-
-/* コードブロック上端 */
-.markdown-source-view.mod-cm6 .HyperMD-codeblock-begin {
-  border-top: 1px solid #3a3f4b !important;
-  border-radius: 8px 8px 0 0 !important;
-  padding-top: 0.8em !important;
-}
-
-/* コードブロック下端 */
-.markdown-source-view.mod-cm6 .HyperMD-codeblock-end {
-  border-bottom: 1px solid #3a3f4b !important;
-  border-radius: 0 0 8px 8px !important;
-  padding-bottom: 0.8em !important;
-}
-
-/* インラインコード */
-.markdown-rendered :not(pre) > code,
-.markdown-source-view.mod-cm6 .cm-inline-code {
-  color: #e5c07b !important;
-  background-color: #282c34 !important;
-  border: 1px solid #3a3f4b;
-  border-radius: 4px;
-  padding: 0.1em 0.35em;
-}

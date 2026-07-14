@@ -4,6 +4,8 @@
   "baseFontSize": 16,
   "cssTheme": "",
   "enabledCssSnippets": [
-    "customm"
+    "customm",
+    "origami-code",
+    "File-Explorer"
   ]
 }
