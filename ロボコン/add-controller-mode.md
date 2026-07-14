@@ -13,6 +13,7 @@ feat/dog3-add-controller-mode/sto
 		* [x] 玄米さんとコマンド系合わせる ✅ 2026-07-13
 			* [x] ar ✅ 2026-07-13
 	* [ ] 合体シーケンス
+		* [[合体]]
 		* [x] Aruco付け足した ✅ 2026-07-10
 		* [ ] arコマンド治す
 		* feat/dog3-manual-docking-sequence/sto
