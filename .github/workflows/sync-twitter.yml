@@ -5,6 +5,12 @@ on:
     # 23:30 JST = 14:30 UTC
     - cron: "30 14 * * *"
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/sync_twitter.py
+      - .github/workflows/sync-twitter.yml
 
 permissions:
   contents: write
@@ -20,12 +26,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -34,7 +40,6 @@ jobs:
           X_USERNAME: sato_mega33
           X_LOG_PATH: Twitterログ.md
           START_AT: "2026-07-28T21:43:00+09:00"
-          X_COOKIE: ${{ secrets.X_COOKIE }}
         run: python scripts/sync_twitter.py
 
       - name: Commit and push changes
