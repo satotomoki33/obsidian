@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Save recent posts from a public X profile into an Obsidian Markdown log."""
+"""Save recent posts from a public X profile into an Obsidian Markdown log.
+
+The script intentionally avoids the paid X API. It tries several public Nitter
+instances (RSS first, HTML second), then RSSHub as a last public-feed fallback.
+Public mirrors can disappear, so the source list is configurable with the
+NITTER_INSTANCES environment variable.
+"""
 
 from __future__ import annotations
 
@@ -11,19 +17,38 @@ import sys
 import time
 import urllib.error
 import urllib.request
+import xml.etree.ElementTree as ET
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
+from html.parser import HTMLParser
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 JST = ZoneInfo("Asia/Tokyo")
 TWITTER_EPOCH_MS = 1288834974657
 
-STATUS_ID_RE = re.compile(r"(?:x|twitter)\.com/[^/\s)]+/status/(\d+)")
-MARKDOWN_IMAGE_RE = re.compile(r"!\[[^\]]*]\([^)]*\)")
-EMPTY_LINK_RE = re.compile(r"\[\]\([^)]*\)")
-MARKDOWN_LINK_RE = re.compile(r"\[([^\]]*)]\((https?://[^)]*)\)")
+DEFAULT_NITTER_INSTANCES = (
+    "https://xcancel.com",
+    "https://nitter.poast.org",
+    "https://nitter.privacyredirect.com",
+    "https://lightbrd.com",
+    "https://nitter.space",
+    "https://nitter.tiekoetter.com",
+    "https://nitter.net",
+)
+DEFAULT_RSSHUB_FEEDS = (
+    "https://rsshub.app/twitter/user/{username}",
+)
+
+STATUS_ID_RE = re.compile(r"(?:x|twitter)\.com/[^/\s)]+/status/(\d+)", re.I)
+ANY_STATUS_RE = re.compile(
+    r"https?://[^/]+/([^/#?\s]+)/status/(\d+)",
+    re.I,
+)
+TAG_RE = re.compile(r"<[^>]+>")
+SPACE_RE = re.compile(r"[ \t\f\v]+")
 
 
 @dataclass(frozen=True)
@@ -34,122 +59,355 @@ class Post:
     url: str
 
 
-def request_text(url: str, attempts: int = 3) -> str:
+def request_text(url: str, attempts: int = 2) -> str:
     headers = {
         "User-Agent": (
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/138.0 Safari/537.36"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) "
+            "Gecko/20100101 Firefox/128.0"
         ),
-        "Accept": "text/plain",
+        "Accept": (
+            "application/rss+xml, application/atom+xml, application/xml;q=0.9, "
+            "text/xml;q=0.8, text/html;q=0.7, */*;q=0.5"
+        ),
         "Accept-Language": "ja,en-US;q=0.8,en;q=0.6",
-        "X-No-Cache": "true",
-        "X-Respond-With": "markdown",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
     }
     last_error: Exception | None = None
 
     for attempt in range(1, attempts + 1):
         try:
             request = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(request, timeout=90) as response:
+            with urllib.request.urlopen(request, timeout=45) as response:
                 body = response.read().decode("utf-8", errors="replace")
                 if not body.strip():
                     raise RuntimeError("empty response")
                 return body
         except urllib.error.HTTPError as exc:
-            last_error = exc
-            if attempt < attempts:
+            last_error = RuntimeError(f"HTTP {exc.code} {exc.reason}")
+            if attempt < attempts and exc.code in {408, 425, 429, 500, 502, 503, 504}:
                 retry_after = exc.headers.get("Retry-After")
-                delay = (
-                    int(retry_after)
-                    if retry_after and retry_after.isdigit()
-                    else 5 * attempt
-                )
-                time.sleep(min(delay, 30))
+                delay = int(retry_after) if retry_after and retry_after.isdigit() else 4 * attempt
+                time.sleep(min(delay, 20))
+            else:
+                break
         except (urllib.error.URLError, TimeoutError, RuntimeError) as exc:
             last_error = exc
             if attempt < attempts:
-                time.sleep(5 * attempt)
+                time.sleep(4 * attempt)
 
-    raise RuntimeError(f"取得に失敗しました: {url}: {last_error}")
-
-
-def fetch_profile(username: str, suffix: str = "") -> str:
-    target = f"https://x.com/{username}{suffix}"
-    return request_text(f"https://r.jina.ai/{target}")
+    raise RuntimeError(f"{url}: {last_error}")
 
 
 def snowflake_datetime(post_id: str) -> datetime:
-    """Restore the post creation time from its X Snowflake ID."""
     timestamp_ms = (int(post_id) >> 22) + TWITTER_EPOCH_MS
     return datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc)
 
 
-def clean_post_text(raw: str, username: str, post_id: str) -> str:
-    text = html.unescape(raw)
-
-    # Remove the engagement-count tail belonging to this post.
-    quotes_link = re.search(
-        rf"\[\]\(https://x\.com/{re.escape(username)}/status/{post_id}/quotes\)",
-        text,
-        flags=re.IGNORECASE,
-    )
-    if quotes_link:
-        text = text[: quotes_link.start()]
-
-    text = MARKDOWN_IMAGE_RE.sub("", text)
-    text = EMPTY_LINK_RE.sub("", text)
-    text = MARKDOWN_LINK_RE.sub(lambda match: match.group(1), text)
-    text = re.sub(r"\b(?:Video|Image)\s+\d+\b", "", text)
-    text = text.replace("Show more", "")
-    text = re.sub(r"\s+", " ", text).strip(" -*\n\t")
-
-    return text or "（画像・動画のみの投稿）"
+def local_name(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1].lower()
 
 
-def parse_profile(markdown: str, username: str) -> list[Post]:
-    own_status_link = re.compile(
-        rf"\[[^\]]*]\(https://x\.com/{re.escape(username)}/status/(\d+)\)",
-        flags=re.IGNORECASE,
-    )
+def child_text(element: ET.Element, *names: str) -> str:
+    wanted = {name.lower() for name in names}
+    for child in list(element):
+        if local_name(child.tag) in wanted:
+            return "".join(child.itertext()).strip()
+    return ""
+
+
+def entry_link(element: ET.Element) -> str:
+    for child in list(element):
+        if local_name(child.tag) != "link":
+            continue
+        href = child.attrib.get("href", "").strip()
+        if href:
+            rel = child.attrib.get("rel", "alternate")
+            if rel in {"alternate", ""}:
+                return href
+        if child.text and child.text.strip():
+            return child.text.strip()
+    return ""
+
+
+def parse_datetime(raw: str, post_id: str) -> datetime:
+    if raw.strip():
+        try:
+            value = parsedate_to_datetime(raw.strip())
+            if value.tzinfo is None:
+                value = value.replace(tzinfo=timezone.utc)
+            return value.astimezone(timezone.utc)
+        except (TypeError, ValueError, OverflowError):
+            try:
+                value = datetime.fromisoformat(raw.strip().replace("Z", "+00:00"))
+                if value.tzinfo is None:
+                    value = value.replace(tzinfo=timezone.utc)
+                return value.astimezone(timezone.utc)
+            except ValueError:
+                pass
+    return snowflake_datetime(post_id)
+
+
+class FragmentTextParser(HTMLParser):
+    BLOCK_TAGS = {"p", "div", "li", "blockquote", "br", "hr"}
+    SKIP_TAGS = {"script", "style", "svg"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self.skip_depth = 0
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        tag = tag.lower()
+        if tag in self.SKIP_TAGS:
+            self.skip_depth += 1
+            return
+        if self.skip_depth:
+            return
+        if tag in self.BLOCK_TAGS:
+            self.parts.append("\n")
+
+    def handle_endtag(self, tag: str) -> None:
+        tag = tag.lower()
+        if tag in self.SKIP_TAGS and self.skip_depth:
+            self.skip_depth -= 1
+            return
+        if not self.skip_depth and tag in self.BLOCK_TAGS:
+            self.parts.append("\n")
+
+    def handle_data(self, data: str) -> None:
+        if not self.skip_depth:
+            self.parts.append(data)
+
+
+def html_to_text(raw: str) -> str:
+    parser = FragmentTextParser()
+    try:
+        parser.feed(raw)
+        text = "".join(parser.parts)
+    except Exception:
+        text = TAG_RE.sub(" ", raw)
+    text = html.unescape(text).replace("\r", "")
+    lines = [SPACE_RE.sub(" ", line).strip() for line in text.splitlines()]
+    text = "\n".join(line for line in lines if line)
+    text = re.sub(r"(?:pic\.twitter\.com|https?://t\.co)/\S+", "", text)
+    return text.strip()
+
+
+def status_from_url(url: str) -> tuple[str, str] | None:
+    match = ANY_STATUS_RE.search(html.unescape(url))
+    if not match:
+        return None
+    return match.group(1), match.group(2)
+
+
+def parse_feed(document: str, username: str) -> list[Post]:
+    try:
+        root = ET.fromstring(document.lstrip("\ufeff \t\r\n"))
+    except ET.ParseError as exc:
+        raise RuntimeError(f"feed XML parse error: {exc}") from exc
+
+    entries = [element for element in root.iter() if local_name(element.tag) in {"item", "entry"}]
+    if not entries:
+        raise RuntimeError("feed contained no entries")
+
     posts: dict[str, Post] = {}
-
-    # Jina Reader renders each timeline item as a Markdown bullet.
-    for block in re.split(r"(?m)^\*\s+", markdown):
-        match = own_status_link.search(block)
-        if not match:
-            # Pure reposts use the original author's status URL, so they are
-            # naturally excluded here.
+    for entry in entries:
+        title = child_text(entry, "title")
+        if title.casefold().startswith("rt by @"):
             continue
 
-        post_id = match.group(1)
+        link = entry_link(entry)
+        guid = child_text(entry, "guid", "id")
+        status = status_from_url(link) or status_from_url(guid)
+        if not status:
+            continue
+        owner, post_id = status
+        if owner.casefold() != username.casefold():
+            continue
+
+        description = child_text(entry, "description", "content", "summary")
+        text = html_to_text(description) or html_to_text(title)
+        if not text:
+            text = "（画像・動画のみの投稿）"
+
+        created_raw = child_text(entry, "pubdate", "published", "updated")
         posts[post_id] = Post(
             post_id=post_id,
-            created_at=snowflake_datetime(post_id),
-            text=clean_post_text(block[match.end() :], username, post_id),
+            created_at=parse_datetime(created_raw, post_id),
+            text=text,
             url=f"https://x.com/{username}/status/{post_id}",
         )
 
+    if not posts:
+        raise RuntimeError("feed entries were present, but no matching posts were parsed")
     return sorted(posts.values(), key=lambda post: (post.created_at, int(post.post_id)))
+
+
+class NitterTimelineParser(HTMLParser):
+    def __init__(self, username: str) -> None:
+        super().__init__(convert_charrefs=True)
+        self.username = username
+        self.posts: dict[str, Post] = {}
+        self.depth = 0
+        self.current: dict[str, object] | None = None
+        self.capture_depth: int | None = None
+
+    @staticmethod
+    def attr_map(attrs: list[tuple[str, str | None]]) -> dict[str, str]:
+        return {key: value or "" for key, value in attrs}
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        values = self.attr_map(attrs)
+        classes = set(values.get("class", "").split())
+
+        if tag == "div" and "timeline-item" in classes and self.current is None:
+            self.current = {"owner": "", "post_id": "", "parts": [], "retweet": False}
+            self.depth = 1
+            return
+
+        if self.current is None:
+            return
+
+        if tag == "div":
+            self.depth += 1
+            if "retweet-header" in classes:
+                self.current["retweet"] = True
+            if "tweet-content" in classes and self.capture_depth is None:
+                self.capture_depth = self.depth
+
+        if tag == "a" and "tweet-link" in classes and not self.current["post_id"]:
+            href = values.get("href", "")
+            status = status_from_url(f"https://nitter.invalid{href}" if href.startswith("/") else href)
+            if status:
+                self.current["owner"], self.current["post_id"] = status
+
+        if tag == "br" and self.capture_depth is not None:
+            parts = self.current["parts"]
+            assert isinstance(parts, list)
+            parts.append("\n")
+
+    def handle_data(self, data: str) -> None:
+        if self.current is not None and self.capture_depth is not None:
+            parts = self.current["parts"]
+            assert isinstance(parts, list)
+            parts.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if self.current is None or tag != "div":
+            return
+
+        if self.capture_depth == self.depth:
+            self.capture_depth = None
+
+        self.depth -= 1
+        if self.depth != 0:
+            return
+
+        owner = str(self.current["owner"])
+        post_id = str(self.current["post_id"])
+        retweet = bool(self.current["retweet"])
+        parts = self.current["parts"]
+        assert isinstance(parts, list)
+        text = html_to_text("".join(str(part) for part in parts))
+
+        if not retweet and owner.casefold() == self.username.casefold() and post_id:
+            self.posts[post_id] = Post(
+                post_id=post_id,
+                created_at=snowflake_datetime(post_id),
+                text=text or "（画像・動画のみの投稿）",
+                url=f"https://x.com/{self.username}/status/{post_id}",
+            )
+
+        self.current = None
+        self.capture_depth = None
+
+
+def parse_nitter_html(document: str, username: str) -> list[Post]:
+    parser = NitterTimelineParser(username)
+    parser.feed(document)
+    if not parser.posts:
+        raise RuntimeError("Nitter HTML contained no matching posts")
+    return sorted(parser.posts.values(), key=lambda post: (post.created_at, int(post.post_id)))
+
+
+def configured_instances() -> tuple[str, ...]:
+    raw = os.environ.get("NITTER_INSTANCES", "").strip()
+    if not raw:
+        return DEFAULT_NITTER_INSTANCES
+    values = tuple(value.strip().rstrip("/") for value in raw.split(",") if value.strip())
+    return values or DEFAULT_NITTER_INSTANCES
+
+
+def fetch_nitter_posts(username: str) -> tuple[list[Post], list[str]]:
+    errors: list[str] = []
+    instances = configured_instances()
+
+    for index, base in enumerate(instances):
+        base = base.rstrip("/")
+        posts: dict[str, Post] = {}
+        base_succeeded = False
+
+        for suffix in ("", "/with_replies"):
+            rss_url = f"{base}/{username}{suffix}/rss"
+            try:
+                for post in parse_feed(request_text(rss_url), username):
+                    posts[post.post_id] = post
+                base_succeeded = True
+                continue
+            except RuntimeError as exc:
+                errors.append(f"{rss_url}: {exc}")
+
+            html_url = f"{base}/{username}{suffix}"
+            try:
+                for post in parse_nitter_html(request_text(html_url), username):
+                    posts[post.post_id] = post
+                base_succeeded = True
+            except RuntimeError as exc:
+                errors.append(f"{html_url}: {exc}")
+
+        if base_succeeded and posts:
+            print(f"取得元: {base} ({len(posts)}件)")
+            return sorted(posts.values(), key=lambda post: (post.created_at, int(post.post_id))), errors
+
+        if index + 1 < len(instances):
+            time.sleep(1)
+
+    return [], errors
+
+
+def fetch_rsshub_posts(username: str) -> tuple[list[Post], list[str]]:
+    errors: list[str] = []
+    templates_raw = os.environ.get("RSSHUB_FEEDS", "").strip()
+    templates = (
+        tuple(value.strip() for value in templates_raw.split(",") if value.strip())
+        if templates_raw
+        else DEFAULT_RSSHUB_FEEDS
+    )
+
+    for template in templates:
+        url = template.format(username=username)
+        try:
+            posts = parse_feed(request_text(url), username)
+            print(f"取得元: {url} ({len(posts)}件)")
+            return posts, errors
+        except RuntimeError as exc:
+            errors.append(f"{url}: {exc}")
+    return [], errors
 
 
 def fetch_posts(username: str) -> list[Post]:
-    posts: dict[str, Post] = {}
-    errors: list[str] = []
+    posts, nitter_errors = fetch_nitter_posts(username)
+    if posts:
+        return posts
 
-    # These views can expose different recent items. Combining them captures
-    # normal posts, replies and quote posts, while IDs remove duplicates.
-    for suffix in ("", "/with_replies"):
-        try:
-            for post in parse_profile(fetch_profile(username, suffix), username):
-                posts[post.post_id] = post
-        except RuntimeError as exc:
-            errors.append(str(exc))
+    posts, rsshub_errors = fetch_rsshub_posts(username)
+    if posts:
+        return posts
 
-    if not posts:
-        detail = "; ".join(errors) if errors else "投稿を解析できませんでした"
-        raise RuntimeError(f"Jina Readerから投稿を取得できませんでした: {detail}")
-
-    return sorted(posts.values(), key=lambda post: (post.created_at, int(post.post_id)))
+    errors = nitter_errors + rsshub_errors
+    concise = "; ".join(errors[-8:])
+    raise RuntimeError(f"公開ミラーから投稿を取得できませんでした: {concise}")
 
 
 def existing_ids(markdown: str) -> set[str]:
