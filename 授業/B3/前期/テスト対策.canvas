@@ -1,0 +1,23 @@
+{
+	"nodes":[
+		{"id":"overview","type":"text","text":"# 前期テスト対策\n\nデイリーノートに登録されているテスト予定","x":0,"y":0,"width":400,"height":160,"color":"1"},
+		{"id":"jul31","type":"text","text":"## 7月31日（金）","x":-600,"y":260,"width":320,"height":100,"color":"2"},
+		{"id":"english","type":"file","file":"授業/B3/前期/英語 Reading & Writing Ⅲ/英語期末テスト.md","x":-800,"y":440,"width":360,"height":260,"color":"2"},
+		{"id":"health","type":"file","file":"授業/B3/前期/保健衛生学/テスト.md","x":-380,"y":440,"width":360,"height":260,"color":"2"},
+		{"id":"aug05","type":"text","text":"## 8月5日（水）","x":40,"y":260,"width":320,"height":100,"color":"4"},
+		{"id":"discrete","type":"file","file":"授業/B3/前期/離散数学論/テスト.md","x":-40,"y":440,"width":360,"height":260,"color":"4"},
+		{"id":"algorithm","type":"file","file":"授業/B3/前期/アルゴリズムとデータ構造/テスト.md","x":380,"y":440,"width":360,"height":260,"color":"4"},
+		{"id":"aug06","type":"text","text":"## 8月6日（木）","x":680,"y":260,"width":320,"height":100,"color":"5"},
+		{"id":"formal","type":"file","file":"授業/B3/前期/形式言語論/テスト.md","x":680,"y":440,"width":360,"height":260,"color":"5"}
+	],
+	"edges":[
+		{"id":"overview-jul31","fromNode":"overview","fromSide":"bottom","toNode":"jul31","toSide":"top","color":"2"},
+		{"id":"jul31-english","fromNode":"jul31","fromSide":"bottom","toNode":"english","toSide":"top","color":"2"},
+		{"id":"jul31-health","fromNode":"jul31","fromSide":"bottom","toNode":"health","toSide":"top","color":"2"},
+		{"id":"overview-aug05","fromNode":"overview","fromSide":"bottom","toNode":"aug05","toSide":"top","color":"4"},
+		{"id":"aug05-discrete","fromNode":"aug05","fromSide":"bottom","toNode":"discrete","toSide":"top","color":"4"},
+		{"id":"aug05-algorithm","fromNode":"aug05","fromSide":"bottom","toNode":"algorithm","toSide":"top","color":"4"},
+		{"id":"overview-aug06","fromNode":"overview","fromSide":"bottom","toNode":"aug06","toSide":"top","color":"5"},
+		{"id":"aug06-formal","fromNode":"aug06","fromSide":"bottom","toNode":"formal","toSide":"top","color":"5"}
+	]
+}
