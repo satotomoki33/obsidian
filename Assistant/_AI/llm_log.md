@@ -69,3 +69,7 @@ AIが行った整理・作成・追記の記録をここに残す。
 - `Assistant/Projects/エミュ機改造/Action Deck設計.md` にコントローラー式アクションランチャーの設計を整理
 - `Assistant/Projects/エミュ機改造/機種選定.md` に必須条件・候補機種・購入前検証項目を整理
 - `Assistant/Projects/エミュ機改造/logs.md` に初期検討内容と決定事項を記録
+- `Weekly/README.md` を作成し、週間レビューの保存形式を定義
+- `Weekly/2026/07/2026-W31.md` に今週のウィークリーノート雛形を作成
+- `Assistant/_AI/README_FOR_LLM.md` に `Weekly/` の編集・保存ルールを追加
+- 毎週の週間レビューをGitHubへ保存してから通知するよう自動処理を更新
