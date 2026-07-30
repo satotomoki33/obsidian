@@ -73,3 +73,5 @@ AIが行った整理・作成・追記の記録をここに残す。
 - `Weekly/2026/07/2026-W31.md` に今週のウィークリーノート雛形を作成
 - `Assistant/_AI/README_FOR_LLM.md` に `Weekly/` の編集・保存ルールを追加
 - 毎週の週間レビューをGitHubへ保存してから通知するよう自動処理を更新
+- `Assistant/Projects/Android自動化アプリ/overview.md` を作成し、目的・JSON設計・機能・技術構成・MVP・安全機構を整理
+- `Assistant/Projects/Android自動化アプリ/logs.md` を作成し、初期検討・決定事項・未解決事項を記録
