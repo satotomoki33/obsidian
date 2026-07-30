@@ -76,3 +76,7 @@ AIが行った整理・作成・追記の記録をここに残す。
 - `Assistant/Projects/Android自動化アプリ/overview.md` を作成し、目的・JSON設計・機能・技術構成・MVP・安全機構を整理
 - `Assistant/Projects/Android自動化アプリ/logs.md` を作成し、初期検討・決定事項・未解決事項を記録
 - `Assistant/Projects/ロボコン/neko1-ARカメラ確認.md` に実機デバイス対応、ROS画像トピック、launchとの差分、未解決事項を整理
+
+## 2026-07-31
+
+- `Assistant/Projects/ロボコン/LattePanda-IP固定手順.md` を作成し、新しいLattePandaをPCからSSH経由で `192.168.11.11` に固定する手順、確認方法、復旧方法を整理
