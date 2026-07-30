@@ -75,3 +75,4 @@ AIが行った整理・作成・追記の記録をここに残す。
 - 毎週の週間レビューをGitHubへ保存してから通知するよう自動処理を更新
 - `Assistant/Projects/Android自動化アプリ/overview.md` を作成し、目的・JSON設計・機能・技術構成・MVP・安全機構を整理
 - `Assistant/Projects/Android自動化アプリ/logs.md` を作成し、初期検討・決定事項・未解決事項を記録
+- `Assistant/Projects/ロボコン/neko1-ARカメラ確認.md` に実機デバイス対応、ROS画像トピック、launchとの差分、未解決事項を整理
