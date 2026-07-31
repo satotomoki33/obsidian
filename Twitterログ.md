@@ -32,3 +32,16 @@
 一生に一度は行ってみたい
 
 [元の投稿](https://x.com/sato_mega33/status/2082749450276188283)
+
+## 2026-07-31
+
+### 11:33
+
+Robocon2026
+Dimple Arora (@DimpleAroro23s)
+When you don't have a pendrive or network and still need to transfer the files anyway 🤯
+Video
+Community note: Post has been stolen from this user: x.com/i/status/20565…
+— https://nitter.net/DimpleAroro23s/status/2082761874215686370#m
+
+[元の投稿](https://x.com/sato_mega33/status/2083018134039216469)
