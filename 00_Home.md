@@ -10,6 +10,7 @@ Vaultの入口。迷ったらここから開く。
 - [[Daily/2026/07/2026-07-06|Today]]
 - [[ロボコン/ロボコン|ロボコン]]
 - [[開発/codex chat|codex chat]]
+- [[Assistant/Projects/Wio Buddy Arcade/overview|Wio Buddy Arcade]]
 - [[Linuxコマンドメモ]]
 
 ## Areas
