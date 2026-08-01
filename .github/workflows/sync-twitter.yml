@@ -10,6 +10,7 @@ on:
       - main
     paths:
       - scripts/sync_twitter.py
+      - scripts/sort_twitter_log.py
       - .github/workflows/sync-twitter.yml
 
 permissions:
@@ -41,6 +42,9 @@ jobs:
           X_LOG_PATH: Twitterログ.md
           START_AT: "2026-07-28T21:43:00+09:00"
         run: python scripts/sync_twitter.py
+
+      - name: Sort log newest first
+        run: python scripts/sort_twitter_log.py --log "Twitterログ.md"
 
       - name: Commit and push changes
         shell: bash
