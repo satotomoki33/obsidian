@@ -80,3 +80,9 @@ AIが行った整理・作成・追記の記録をここに残す。
 ## 2026-07-31
 
 - `Assistant/Projects/ロボコン/LattePanda-IP固定手順.md` を作成し、新しいLattePandaをPCからSSH経由で `192.168.11.11` に固定する手順、確認方法、復旧方法を整理
+
+## 2026-08-01
+
+- `Twitterログ.md` を日付・時刻ともに新しい順へ並べ替え
+- `scripts/sort_twitter_log.py` を追加し、Xログ同期後に常に新しい投稿が上へ並ぶよう自動処理を変更
+- `.github/workflows/sync-twitter.yml` にログ整列ステップを追加
