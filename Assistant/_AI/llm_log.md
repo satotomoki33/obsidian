@@ -86,3 +86,8 @@ AIが行った整理・作成・追記の記録をここに残す。
 - `Twitterログ.md` を日付・時刻ともに新しい順へ並べ替え
 - `scripts/sort_twitter_log.py` を追加し、Xログ同期後に常に新しい投稿が上へ並ぶよう自動処理を変更
 - `.github/workflows/sync-twitter.yml` にログ整列ステップを追加
+
+## 2026-08-02
+
+- `Assistant/Projects/ロボコン/DOG3-LiDAR-IP設定手順.md` を作成し、LattePanda側の疎通確認、`arping`によるIP特定、Windowsの`ncpa.cpl`設定、HOKUYO IP Discoveryでの書き込み、ROS 2での最終確認を整理
+- `Daily/2026/08/2026-08-02.md` にDOG3 LiDAR復旧の作業ログを追加
