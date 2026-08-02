@@ -196,41 +196,45 @@ Robstride基板は4ポートともEL05設定で生成され、dog3ではMotor ID
   ＋ SWセンサ基板ID2 index0・1
 ```
 
+## Lidar
+
+  - 右: 192.168.0.10
+  - 左: 192.168.1.12
 ---
 
 # 機構単位の最終接続まとめ
 
-|機構|アクチュエータ|フィードバック／関連基板|
-|---|---|---|
-|前右走行|EToF1 CAN1 ODrive ID0|―|
-|前右操舵|EToF1 CAN2 Robomas2 Motor ID1|ステア磁気エンコーダID1|
-|後右走行|ODrive ID1|―|
-|後右操舵|Robomas2 Motor ID2|ステア磁気エンコーダID2|
-|前左走行|ODrive ID2|―|
-|前左操舵|Robomas2 Motor ID3|ステア磁気エンコーダID3|
-|後左走行|ODrive ID3|―|
-|後左操舵|Robomas2 Motor ID4|ステア磁気エンコーダID4|
-|合体昇降|ODrive ID4|―|
-|合体補助左|Robomas1 Motor ID1|―|
-|合体補助右|Robomas1 Motor ID2|―|
-|槍昇降|ODrive ID5|磁気エンコーダID3|
-|槍ローラー位置|Robstride1 Motor ID2|SWセンサ1 index 0・1|
-|槍回転|Robstride1 Motor ID4|―|
-|槍ローラー把持|ソレノイド1 index1|―|
-|ポール回収把持|Robomas1 Motor ID3|―|
-|ポール回収ピッチ|ソレノイド1 index0|―|
-|回転ArUco|Robomas1 Motor ID4|―|
-|情報伝達シャッタ|ソレノイド1 index2|―|
-|右調整ラック|Robomas3 Motor ID1|―|
-|右調整ハンド|Robomas3 Motor ID2|―|
-|右KFS昇降|Robomas3 Motor ID3|MagEnc ID1|
-|右KFS展開|Robomas3 Motor ID4|MagEnc ID2|
-|右KFSハンド|Solenoid3 index0|SW Sensor3 index0・1|
-|左調整ラック|Robomas4 Motor ID1|―|
-|左調整ハンド|Robomas4 Motor ID2|―|
-|左KFS昇降|Robomas4 Motor ID3|MagEnc ID4|
-|左KFS展開|Robomas4 Motor ID4|MagEnc ID5|
-|左KFSハンド|Solenoid2 index0|SW Sensor2 index0・1|
+| 機構       | アクチュエータ                       | フィードバック／関連基板        |
+| -------- | ----------------------------- | ------------------- |
+| 前右走行     | EToF1 CAN1 ODrive ID0         | ―                   |
+| 前右操舵     | EToF1 CAN2 Robomas2 Motor ID1 | ステア磁気エンコーダID1       |
+| 後右走行     | ODrive ID1                    | ―                   |
+| 後右操舵     | Robomas2 Motor ID2            | ステア磁気エンコーダID2       |
+| 前左走行     | ODrive ID2                    | ―                   |
+| 前左操舵     | Robomas2 Motor ID3            | ステア磁気エンコーダID3       |
+| 後左走行     | ODrive ID3                    | ―                   |
+| 後左操舵     | Robomas2 Motor ID4            | ステア磁気エンコーダID4       |
+| 合体昇降     | ODrive ID4                    | ―                   |
+| 合体補助左    | Robomas1 Motor ID1            | ―                   |
+| 合体補助右    | Robomas1 Motor ID2            | ―                   |
+| 槍昇降      | ODrive ID5                    | 磁気エンコーダID3          |
+| 槍ローラー位置  | Robstride1 Motor ID2          | SWセンサ1 index 0・1    |
+| 槍回転      | Robstride1 Motor ID4          | ―                   |
+| 槍ローラー把持  | ソレノイド1 index1                 | ―                   |
+| ポール回収把持  | Robomas1 Motor ID3            | ―                   |
+| ポール回収ピッチ | ソレノイド1 index0                 | ―                   |
+| 回転ArUco  | Robomas1 Motor ID4            | ―                   |
+| 情報伝達シャッタ | ソレノイド1 index2                 | ―                   |
+| 右調整ラック   | Robomas3 Motor ID1            | ―                   |
+| 右調整ハンド   | Robomas3 Motor ID2            | ―                   |
+| 右KFS昇降   | Robomas3 Motor ID3            | MagEnc ID1          |
+| 右KFS展開   | Robomas3 Motor ID4            | MagEnc ID2          |
+| 右KFSハンド  | Solenoid3 index0              | SW Sensor3 index0・1 |
+| 左調整ラック   | Robomas4 Motor ID1            | ―                   |
+| 左調整ハンド   | Robomas4 Motor ID2            | ―                   |
+| 左KFS昇降   | Robomas4 Motor ID3            | MagEnc ID4          |
+| 左KFS展開   | Robomas4 Motor ID4            | MagEnc ID5          |
+| 左KFSハンド  | Solenoid2 index0              | SW Sensor2 index0・1 |
 
 ## 注意点
 
