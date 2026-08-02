@@ -64,7 +64,7 @@ AIが行った整理・作成・追記の記録をここに残す。
 
 ## 2026-07-30
 
-- 旧 `Assistant/Projects/エミュ機改造.md` を削除し、プロジェクトフォルダへ再構成
+- 旧 `Assistant/Projects/エミュ機改造.md` をプロジェクトフォルダへ再構成
 - `Assistant/Projects/エミュ機改造/overview.md` に目的・機能・方針・構成・MVP・リスクを整理
 - `Assistant/Projects/エミュ機改造/Action Deck設計.md` にコントローラー式アクションランチャーの設計を整理
 - `Assistant/Projects/エミュ機改造/機種選定.md` に必須条件・候補機種・購入前検証項目を整理
@@ -91,3 +91,4 @@ AIが行った整理・作成・追記の記録をここに残す。
 
 - `Assistant/Projects/ロボコン/DOG3-LiDAR-IP設定手順.md` を作成し、LattePanda側の疎通確認、`arping`によるIP特定、Windowsの`ncpa.cpl`設定、HOKUYO IP Discoveryでの書き込み、ROS 2での最終確認を整理
 - `Daily/2026/08/2026-08-02.md` にDOG3 LiDAR復旧の作業ログを追加
+- `Weekly/2026/07/2026-W31.md` に2026年7月27日〜8月2日の週間レビューを保存
