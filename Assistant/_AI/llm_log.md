@@ -68,7 +68,7 @@ AIが行った整理・作成・追記の記録をここに残す。
 - `Assistant/Projects/エミュ機改造/overview.md` に目的・機能・方針・構成・MVP・リスクを整理
 - `Assistant/Projects/エミュ機改造/Action Deck設計.md` にコントローラー式アクションランチャーの設計を整理
 - `Assistant/Projects/エミュ機改造/機種選定.md` に必須条件・候補機種・購入前検証項目を整理
-- `Assistant/Projects/エミュ機改造/logs.md` に初期検討内容と決定事項を記録
+- `Assistant/Projects/エミュ機改造/logs.md` に初期検討内容と決定事項・未解決事項を記録
 - `Weekly/README.md` を作成し、週間レビューの保存形式を定義
 - `Weekly/2026/07/2026-W31.md` に今週のウィークリーノート雛形を作成
 - `Assistant/_AI/README_FOR_LLM.md` に `Weekly/` の編集・保存ルールを追加
@@ -102,3 +102,5 @@ AIが行った整理・作成・追記の記録をここに残す。
 
 - `Assistant/Projects/Linuxデスクトップカスタマイズ/overview.md` を作成し、Persona-Quickshellをきっかけに興味を持ったHyprland / Quickshell / ricingの概要、やってみたいこと、検索語を整理
 - `Assistant/Projects/Linuxデスクトップカスタマイズ/logs.md` に初期検討内容を記録
+- `ロボコン/SSH切断後にROSを停止する.md` を作成し、SSH切断後に残ったROSプロセスを `SIGINT` / `SIGTERM` / `SIGKILL` で停止する手順と `tmux` による予防策を整理
+- `ロボコン/R1トラブルシューティング.md` に上記ノートへのリンクを追加
