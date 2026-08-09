@@ -97,3 +97,8 @@ AIが行った整理・作成・追記の記録をここに残す。
 
 - `Daily/2026/08/2026-08-05.md` に第16講・離散数学期末試験のQ1〜Q8と板書問題の問題・回答を整理して保存
 - `授業/B3/前期/アルゴリズムとデータ構造/アルゴリズムテスト.md` に期末試験の問1〜問9を写真から転記し、図1〜図5をMermaidで再構成
+
+## 2026-08-09
+
+- `Assistant/Projects/Linuxデスクトップカスタマイズ/overview.md` を作成し、Persona-Quickshellをきっかけに興味を持ったHyprland / Quickshell / ricingの概要、やってみたいこと、検索語を整理
+- `Assistant/Projects/Linuxデスクトップカスタマイズ/logs.md` に初期検討内容を記録
