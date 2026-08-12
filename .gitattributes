@@ -1,0 +1,4 @@
+# This file is append-only and may be updated both locally and by GitHub
+# automations. Preserve both sides instead of stopping the daily sync on
+# overlapping additions at the end of the file.
+Assistant/_AI/llm_log.md merge=union
