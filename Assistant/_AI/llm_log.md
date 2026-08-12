@@ -113,3 +113,6 @@ AIが行った整理・作成・追記の記録をここに残す。
 ## 2026-08-12
 
 - `Assistant/Projects/ロボコン/ABU-Robocon-2026-香港参加ガイド.md` を作成し、Participation Guidelinesから大会日程、Robot Check、Test Run、Seeding、Pit、通信・電源、安全、梱包、帰国、応援ルールなどTUTチーム向けの重要情報を整理して保存
+- `Assistant/Projects/Linuxデスクトップカスタマイズ/Codex利用上限をトップバーに表示.md` を作成し、GNOME拡張の概要、仕組み、操作方法、確認コマンド、トラブルシューティングを整理
+- Codex LimitsのGObject未登録エラーを修正し、上記ノートへ対処内容を追記
+- Codex Limitsのトップバー表示をアイコンと残量パーセントだけに省スペース化し、拡張バージョン3へ更新
