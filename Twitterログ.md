@@ -1,3 +1,16 @@
+## 2026-08-13
+
+### 00:17
+
+嬉しすぎる
+OpenAI (@OpenAI)
+Now in preview: The ChatGPT desktop app for Linux.
+Use ChatGPT, ChatGPT Work, and Codex where you already work and build, with your projects and browser workflows on supported Linux systems.
+Video
+— https://nitter.net/OpenAI/status/2087231350134980830#m
+
+[元の投稿](https://x.com/sato_mega33/status/2087559166995177543)
+
 ## 2026-08-11
 
 ### 07:12
