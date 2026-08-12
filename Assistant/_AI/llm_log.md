@@ -74,7 +74,7 @@ AIが行った整理・作成・追記の記録をここに残す。
 - `Assistant/_AI/README_FOR_LLM.md` に `Weekly/` の編集・保存ルールを追加
 - 毎週の週間レビューをGitHubへ保存してから通知するよう自動処理を更新
 - `Assistant/Projects/Android自動化アプリ/overview.md` を作成し、目的・JSON設計・機能・技術構成・MVP・安全機構を整理
-- `Assistant/Projects/Android自動化アプリ/logs.md` を作成し、初期検討・決定事項・未解決事項を記録
+- `Assistant/Projects/Android自動化アプリ/logs.md` を作成し、初期検討内容を記録
 - `Assistant/Projects/ロボコン/neko1-ARカメラ確認.md` に実機デバイス対応、ROS画像トピック、launchとの差分、未解決事項を整理
 
 ## 2026-07-31
@@ -109,3 +109,7 @@ AIが行った整理・作成・追記の記録をここに残す。
 ## 2026-08-10
 
 - `Weekly/2026/08/2026-W32-reflection.md` に週間レビューへの本人回答と、そこから整理した自己理解を保存
+
+## 2026-08-12
+
+- `Assistant/Projects/ロボコン/ABU-Robocon-2026-香港参加ガイド.md` を作成し、Participation Guidelinesから大会日程、Robot Check、Test Run、Seeding、Pit、通信・電源、安全、梱包、帰国、応援ルールなどTUTチーム向けの重要情報を整理して保存
