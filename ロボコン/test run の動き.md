@@ -12,12 +12,12 @@
 | 08:10–08:30 | Orientation・Seeding Sequence Draw              |
 | 08:30〜      | ロボット開梱・再組立                                     |
 | 09:15–11:15 | 1st Robot Check                                |
-| 09:30–11:30 | Test Run Session 1                             |
+| 09:30–11:30 | Test Run Session 1(15分)                        |
 | 11:30       | 事前質問提出期限                                       |
 | 11:30–12:00 | Team Representative + Team Assistant Rehearsal |
 | 11:30–13:30 | 昼食（チームごとの指定時間）                                 |
 | 12:45–14:45 | 2nd Robot Check                                |
-| 13:00–15:00 | Test Run Session 2                             |
+| 13:00–15:00 | Test Run Session 2(10分)                        |
 | 15:00–15:30 | Initial Briefing                               |
 | 15:35–17:45 | Seeding Evaluation                             |
 | 17:45–18:30 | Final Briefing                                 |
