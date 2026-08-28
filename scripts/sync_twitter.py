@@ -579,6 +579,18 @@ def existing_ids(markdown: str) -> set[str]:
     return set(STATUS_ID_RE.findall(markdown))
 
 
+def ensure_source_is_current(posts: list[Post], known_ids: set[str]) -> None:
+    if not posts or not known_ids:
+        return
+    source_latest = max(int(post.post_id) for post in posts)
+    log_latest = max(int(post_id) for post_id in known_ids)
+    if source_latest < log_latest:
+        raise SourceUnavailableError(
+            "取得元の最新投稿が保存済みログより古いため、"
+            "タイムラインが古いキャッシュである可能性があります"
+        )
+
+
 def render_post(post: Post) -> str:
     local = post.created_at.astimezone(JST)
     return f"### {local:%H:%M}\n\n{post.text}\n\n[元の投稿]({post.url})"
@@ -669,6 +681,13 @@ def main() -> int:
     start_at = parse_start_at(args.start_at)
     original = log_path.read_text(encoding="utf-8")
     known_ids = existing_ids(original)
+    try:
+        ensure_source_is_current(posts, known_ids)
+    except SourceUnavailableError as exc:
+        if not args.allow_source_outage:
+            raise
+        report_source_outage(exc)
+        return 0
 
     new_posts = [
         post

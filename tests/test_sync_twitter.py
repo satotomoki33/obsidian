@@ -23,6 +23,25 @@ def embedded_timeline(*tweets: dict) -> str:
 
 
 class SyndicationTests(unittest.TestCase):
+    def test_older_cached_timeline_is_rejected(self) -> None:
+        post = sync_twitter.Post(
+            post_id="100",
+            created_at=sync_twitter.snowflake_datetime("100"),
+            text="old",
+            url="https://x.com/sato_mega33/status/100",
+        )
+        with self.assertRaises(sync_twitter.SourceUnavailableError):
+            sync_twitter.ensure_source_is_current([post], {"200"})
+
+    def test_timeline_at_least_as_new_as_log_is_accepted(self) -> None:
+        post = sync_twitter.Post(
+            post_id="200",
+            created_at=sync_twitter.snowflake_datetime("200"),
+            text="current",
+            url="https://x.com/sato_mega33/status/200",
+        )
+        sync_twitter.ensure_source_is_current([post], {"100", "200"})
+
     def test_rate_limit_reset_time_is_respected(self) -> None:
         headers = {"x-rate-limit-reset": "1120"}
         with mock.patch.object(sync_twitter.time, "time", return_value=1000):
