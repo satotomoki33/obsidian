@@ -70,7 +70,20 @@ class SourceUnavailableError(RuntimeError):
     """Raised when every configured post source is unavailable."""
 
 
-def request_text(url: str, attempts: int = 2) -> str:
+def retry_delay(headers: Any, attempt: int, max_delay: int) -> int:
+    retry_after = headers.get("Retry-After")
+    if retry_after and retry_after.isdigit():
+        delay = int(retry_after)
+    else:
+        reset_at = headers.get("x-rate-limit-reset")
+        if reset_at and reset_at.isdigit():
+            delay = max(int(reset_at) - int(time.time()) + 2, 1)
+        else:
+            delay = 4 * attempt
+    return min(delay, max_delay)
+
+
+def request_text(url: str, attempts: int = 2, max_retry_delay: int = 20) -> str:
     headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) "
@@ -97,9 +110,7 @@ def request_text(url: str, attempts: int = 2) -> str:
         except urllib.error.HTTPError as exc:
             last_error = RuntimeError(f"HTTP {exc.code} {exc.reason}")
             if attempt < attempts and exc.code in {408, 425, 429, 500, 502, 503, 504}:
-                retry_after = exc.headers.get("Retry-After")
-                delay = int(retry_after) if retry_after and retry_after.isdigit() else 4 * attempt
-                time.sleep(min(delay, 20))
+                time.sleep(retry_delay(exc.headers, attempt, max_retry_delay))
             else:
                 break
         except (urllib.error.URLError, TimeoutError, RuntimeError) as exc:
@@ -241,7 +252,9 @@ def parse_syndication_html(document: str, username: str) -> list[Post]:
 def fetch_syndication_posts(username: str) -> tuple[list[Post], list[str]]:
     url = SYNDICATION_URL.format(username=username)
     try:
-        document = request_text(url, attempts=3)
+        # X publishes a rate-limit reset timestamp. Waiting for that reset is
+        # more reliable on shared GitHub runner IPs than retrying after seconds.
+        document = request_text(url, attempts=2, max_retry_delay=300)
         posts = parse_syndication_html(document, username)
         print(f"取得元: X公式埋め込みタイムライン ({len(posts)}件)")
         return posts, []

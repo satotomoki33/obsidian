@@ -23,6 +23,20 @@ def embedded_timeline(*tweets: dict) -> str:
 
 
 class SyndicationTests(unittest.TestCase):
+    def test_rate_limit_reset_time_is_respected(self) -> None:
+        headers = {"x-rate-limit-reset": "1120"}
+        with mock.patch.object(sync_twitter.time, "time", return_value=1000):
+            delay = sync_twitter.retry_delay(headers, attempt=1, max_delay=300)
+
+        self.assertEqual(delay, 122)
+
+    def test_public_source_retry_delay_stays_capped(self) -> None:
+        headers = {"x-rate-limit-reset": "2000"}
+        with mock.patch.object(sync_twitter.time, "time", return_value=1000):
+            delay = sync_twitter.retry_delay(headers, attempt=1, max_delay=20)
+
+        self.assertEqual(delay, 20)
+
     def test_parses_own_posts_and_excludes_retweets(self) -> None:
         own_post = {
             "id_str": "2089709440719376598",
