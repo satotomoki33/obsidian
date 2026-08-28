@@ -41,7 +41,9 @@ jobs:
           X_USERNAME: sato_mega33
           X_LOG_PATH: Twitterログ.md
           START_AT: "2026-07-28T21:43:00+09:00"
-        run: python scripts/sync_twitter.py
+        # Public mirrors are inherently unstable. Only a complete source outage
+        # is downgraded to a visible warning; all other script errors still fail.
+        run: python scripts/sync_twitter.py --allow-source-outage
 
       - name: Sort log newest first
         run: python scripts/sort_twitter_log.py --log "Twitterログ.md"

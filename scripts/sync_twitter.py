@@ -59,6 +59,10 @@ class Post:
     url: str
 
 
+class SourceUnavailableError(RuntimeError):
+    """Raised when every configured public post source is unavailable."""
+
+
 def request_text(url: str, attempts: int = 2) -> str:
     headers = {
         "User-Agent": (
@@ -407,7 +411,9 @@ def fetch_posts(username: str) -> list[Post]:
 
     errors = nitter_errors + rsshub_errors
     concise = "; ".join(errors[-8:])
-    raise RuntimeError(f"公開ミラーから投稿を取得できませんでした: {concise}")
+    raise SourceUnavailableError(
+        f"公開ミラーから投稿を取得できませんでした: {concise}"
+    )
 
 
 def existing_ids(markdown: str) -> set[str]:
@@ -460,6 +466,21 @@ def parse_start_at(raw: str) -> datetime:
     return value.astimezone(timezone.utc)
 
 
+def report_source_outage(exc: SourceUnavailableError) -> None:
+    detail = str(exc).replace("\r", " ").replace("\n", " ")
+    print(f"::warning title=Xログ同期をスキップ::{detail}")
+
+    summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "").strip()
+    if summary_path:
+        with Path(summary_path).open("a", encoding="utf-8") as summary:
+            summary.write(
+                "### ⚠️ Xログ同期をスキップ\n\n"
+                "設定された公開取得元がすべて利用できなかったため、"
+                "Twitterログ.md は変更していません。\n\n"
+                f"`{detail.replace('`', "'")}`\n"
+            )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--username", default=os.environ.get("X_USERNAME", "sato_mega33"))
@@ -468,13 +489,24 @@ def main() -> int:
         "--start-at",
         default=os.environ.get("START_AT", "2026-07-28T21:43:00+09:00"),
     )
+    parser.add_argument(
+        "--allow-source-outage",
+        action="store_true",
+        help="公開取得元が全滅した場合に警告を出し、ログを変更せず正常終了する",
+    )
     args = parser.parse_args()
 
     log_path = Path(args.log)
     if not log_path.exists():
         raise RuntimeError(f"保存先が存在しません: {log_path}")
 
-    posts = fetch_posts(args.username)
+    try:
+        posts = fetch_posts(args.username)
+    except SourceUnavailableError as exc:
+        if not args.allow_source_outage:
+            raise
+        report_source_outage(exc)
+        return 0
     start_at = parse_start_at(args.start_at)
     original = log_path.read_text(encoding="utf-8")
     known_ids = existing_ids(original)
