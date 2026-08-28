@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the local X-to-Obsidian sync after login and every six hours
+
+[Timer]
+OnStartupSec=3min
+OnUnitActiveSec=6h
+RandomizedDelaySec=2min
+Unit=obsidian-x-sync.service
+
+[Install]
+WantedBy=timers.target

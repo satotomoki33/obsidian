@@ -1,0 +1,12 @@
+[Unit]
+Description=Sync X posts into the local Obsidian vault
+After=network-online.target graphical-session.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/obsidian
+ExecStart=%h/.local/share/obsidian-x-sync/venv/bin/python %h/.local/share/obsidian-x-sync/sync_twitter_browser.py --vault %h/obsidian --profile %h/.local/share/obsidian-x-sync/chrome-profile
+
+[Install]
+WantedBy=default.target

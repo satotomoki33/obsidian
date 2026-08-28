@@ -1,17 +1,7 @@
 name: Sync X posts to Obsidian
 
 on:
-  schedule:
-    # 23:30 JST = 14:30 UTC
-    - cron: "30 14 * * *"
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - scripts/sync_twitter.py
-      - scripts/sort_twitter_log.py
-      - .github/workflows/sync-twitter.yml
 
 permissions:
   contents: write
