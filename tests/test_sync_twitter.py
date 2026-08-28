@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import os
 import sys
 import tempfile
@@ -13,6 +14,69 @@ assert SPEC and SPEC.loader
 sync_twitter = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = sync_twitter
 SPEC.loader.exec_module(sync_twitter)
+
+
+def embedded_timeline(*tweets: dict) -> str:
+    entries = [{"content": {"tweet": tweet}} for tweet in tweets]
+    data = {"props": {"pageProps": {"timeline": {"entries": entries}}}}
+    return f'<script id="__NEXT_DATA__" type="application/json">{json.dumps(data)}</script>'
+
+
+class SyndicationTests(unittest.TestCase):
+    def test_parses_own_posts_and_excludes_retweets(self) -> None:
+        own_post = {
+            "id_str": "2089709440719376598",
+            "created_at": "Tue Aug 18 13:42:00 +0000 2026",
+            "text": "新しい投稿 &amp; テスト",
+            "user": {"screen_name": "sato_mega33"},
+        }
+        retweet = {
+            "id_str": "2089709440719376599",
+            "created_at": "Tue Aug 18 13:43:00 +0000 2026",
+            "text": "RT @someone: repost",
+            "user": {"screen_name": "sato_mega33"},
+            "retweeted_status": {},
+        }
+
+        posts = sync_twitter.parse_syndication_html(
+            embedded_timeline(own_post, retweet), "sato_mega33"
+        )
+
+        self.assertEqual([post.post_id for post in posts], ["2089709440719376598"])
+        self.assertEqual(posts[0].text, "新しい投稿 & テスト")
+
+    def test_official_embed_is_preferred(self) -> None:
+        post = sync_twitter.Post(
+            post_id="2089709440719376598",
+            created_at=sync_twitter.snowflake_datetime("2089709440719376598"),
+            text="test",
+            url="https://x.com/sato_mega33/status/2089709440719376598",
+        )
+        with mock.patch.object(
+            sync_twitter, "fetch_syndication_posts", return_value=([post], [])
+        ), mock.patch.object(sync_twitter, "fetch_nitter_posts") as nitter:
+            posts = sync_twitter.fetch_posts("sato_mega33")
+
+        self.assertEqual(posts, [post])
+        nitter.assert_not_called()
+
+    def test_public_mirror_is_used_when_embed_fails(self) -> None:
+        post = sync_twitter.Post(
+            post_id="2089709440719376598",
+            created_at=sync_twitter.snowflake_datetime("2089709440719376598"),
+            text="test",
+            url="https://x.com/sato_mega33/status/2089709440719376598",
+        )
+        with mock.patch.object(
+            sync_twitter,
+            "fetch_syndication_posts",
+            return_value=([], ["HTTP 429"]),
+        ), mock.patch.object(
+            sync_twitter, "fetch_nitter_posts", return_value=([post], [])
+        ):
+            posts = sync_twitter.fetch_posts("sato_mega33")
+
+        self.assertEqual(posts, [post])
 
 
 class MainTests(unittest.TestCase):

@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """Save recent posts from a public X profile into an Obsidian Markdown log.
 
-The script intentionally avoids the paid X API. It tries several public Nitter
-instances (RSS first, HTML second), then RSSHub as a last public-feed fallback.
-Public mirrors can disappear, so the source list is configurable with the
-NITTER_INSTANCES environment variable.
+The script intentionally avoids the paid X API. It uses X's official embedded
+profile timeline first, then tries public Nitter instances and RSSHub as
+fallbacks. Public mirrors can disappear, so the Nitter source list is
+configurable with the NITTER_INSTANCES environment variable.
 """
 
 from __future__ import annotations
 
 import argparse
 import html
+import json
 import os
 import re
 import sys
@@ -24,10 +25,12 @@ from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
 from pathlib import Path
+from typing import Any, Iterable
 from zoneinfo import ZoneInfo
 
 JST = ZoneInfo("Asia/Tokyo")
 TWITTER_EPOCH_MS = 1288834974657
+SYNDICATION_URL = "https://syndication.twitter.com/srv/timeline-profile/screen-name/{username}"
 
 DEFAULT_NITTER_INSTANCES = (
     "https://xcancel.com",
@@ -49,6 +52,10 @@ ANY_STATUS_RE = re.compile(
 )
 TAG_RE = re.compile(r"<[^>]+>")
 SPACE_RE = re.compile(r"[ \t\f\v]+")
+NEXT_DATA_RE = re.compile(
+    r'<script[^>]+id=["\']__NEXT_DATA__["\'][^>]*>(.*?)</script>',
+    re.DOTALL | re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -60,7 +67,7 @@ class Post:
 
 
 class SourceUnavailableError(RuntimeError):
-    """Raised when every configured public post source is unavailable."""
+    """Raised when every configured post source is unavailable."""
 
 
 def request_text(url: str, attempts: int = 2) -> str:
@@ -106,6 +113,140 @@ def request_text(url: str, attempts: int = 2) -> str:
 def snowflake_datetime(post_id: str) -> datetime:
     timestamp_ms = (int(post_id) >> 22) + TWITTER_EPOCH_MS
     return datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc)
+
+
+def get_path(value: Any, *keys: str) -> Any:
+    current = value
+    for key in keys:
+        if not isinstance(current, dict) or key not in current:
+            return None
+        current = current[key]
+    return current
+
+
+def recursive_tweet_candidates(value: Any) -> Iterable[dict[str, Any]]:
+    """Find tweet-shaped objects if X changes the direct timeline path."""
+    if isinstance(value, dict):
+        has_id = isinstance(value.get("id_str") or value.get("id"), (str, int))
+        legacy = value.get("legacy") if isinstance(value.get("legacy"), dict) else value
+        has_text = isinstance(legacy.get("full_text") or legacy.get("text"), str)
+        has_time = isinstance(legacy.get("created_at") or value.get("created_at"), str)
+        if has_id and has_text and has_time:
+            yield value
+        for child in value.values():
+            yield from recursive_tweet_candidates(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from recursive_tweet_candidates(child)
+
+
+def syndication_datetime(raw: str) -> datetime:
+    formats = (
+        "%a %b %d %H:%M:%S %z %Y",
+        "%Y-%m-%dT%H:%M:%S.%f%z",
+        "%Y-%m-%dT%H:%M:%S%z",
+    )
+    normalized = raw.strip().replace("Z", "+00:00")
+    for date_format in formats:
+        try:
+            return datetime.strptime(normalized, date_format).astimezone(timezone.utc)
+        except ValueError:
+            continue
+    try:
+        return datetime.fromisoformat(normalized).astimezone(timezone.utc)
+    except ValueError as exc:
+        raise ValueError(f"Unsupported created_at value: {raw}") from exc
+
+
+def tweet_screen_name(tweet: dict[str, Any]) -> str:
+    possibilities = (
+        get_path(tweet, "user", "screen_name"),
+        get_path(tweet, "user", "legacy", "screen_name"),
+        get_path(tweet, "core", "user_results", "result", "legacy", "screen_name"),
+        get_path(tweet, "author", "screen_name"),
+        get_path(tweet, "author", "userName"),
+    )
+    return next((str(item) for item in possibilities if item), "")
+
+
+def normalize_syndication_tweet(
+    tweet: dict[str, Any], username: str
+) -> Post | None:
+    legacy = tweet.get("legacy") if isinstance(tweet.get("legacy"), dict) else tweet
+    author = tweet_screen_name(tweet)
+    if author and author.casefold() != username.casefold():
+        return None
+    if "retweeted_status" in tweet or "retweeted_status" in legacy:
+        return None
+
+    text = (
+        get_path(tweet, "note_tweet", "note_tweet_results", "result", "text")
+        or legacy.get("full_text")
+        or legacy.get("text")
+        or tweet.get("full_text")
+        or tweet.get("text")
+    )
+    if not isinstance(text, str) or not text.strip() or text.lstrip().startswith("RT @"):
+        return None
+
+    post_id = tweet.get("id_str") or legacy.get("id_str") or tweet.get("id") or legacy.get("id")
+    created_raw = legacy.get("created_at") or tweet.get("created_at")
+    if post_id is None or not isinstance(created_raw, str):
+        return None
+
+    post_id = str(post_id)
+    return Post(
+        post_id=post_id,
+        created_at=syndication_datetime(created_raw),
+        text=html.unescape(text).replace("\r\n", "\n").replace("\r", "\n").strip(),
+        url=f"https://x.com/{username}/status/{post_id}",
+    )
+
+
+def parse_syndication_html(document: str, username: str) -> list[Post]:
+    match = NEXT_DATA_RE.search(document)
+    if not match:
+        raise RuntimeError("X embed response did not contain __NEXT_DATA__")
+    try:
+        data = json.loads(html.unescape(match.group(1)))
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"X embed timeline JSON parse error: {exc}") from exc
+
+    entries = get_path(data, "props", "pageProps", "timeline", "entries")
+    tweets = []
+    if isinstance(entries, list):
+        tweets = [
+            tweet
+            for entry in entries
+            if isinstance(entry, dict)
+            and isinstance((tweet := get_path(entry, "content", "tweet")), dict)
+        ]
+    if not tweets:
+        tweets = list(recursive_tweet_candidates(data))
+
+    posts: dict[str, Post] = {}
+    for tweet in tweets:
+        try:
+            post = normalize_syndication_tweet(tweet, username)
+        except ValueError as exc:
+            print(f"warning: skipped a post with an unknown timestamp: {exc}", file=sys.stderr)
+            continue
+        if post:
+            posts[post.post_id] = post
+    if not posts:
+        raise RuntimeError("X embed timeline contained no matching posts")
+    return sorted(posts.values(), key=lambda post: (post.created_at, int(post.post_id)))
+
+
+def fetch_syndication_posts(username: str) -> tuple[list[Post], list[str]]:
+    url = SYNDICATION_URL.format(username=username)
+    try:
+        document = request_text(url, attempts=3)
+        posts = parse_syndication_html(document, username)
+        print(f"取得元: X公式埋め込みタイムライン ({len(posts)}件)")
+        return posts, []
+    except RuntimeError as exc:
+        return [], [f"{url}: {exc}"]
 
 
 def local_name(tag: str) -> str:
@@ -401,6 +542,10 @@ def fetch_rsshub_posts(username: str) -> tuple[list[Post], list[str]]:
 
 
 def fetch_posts(username: str) -> list[Post]:
+    posts, syndication_errors = fetch_syndication_posts(username)
+    if posts:
+        return posts
+
     posts, nitter_errors = fetch_nitter_posts(username)
     if posts:
         return posts
@@ -410,9 +555,10 @@ def fetch_posts(username: str) -> list[Post]:
         return posts
 
     errors = nitter_errors + rsshub_errors
-    concise = "; ".join(errors[-8:])
+    concise_parts = syndication_errors + errors[-7:]
+    concise = "; ".join(concise_parts)
     raise SourceUnavailableError(
-        f"公開ミラーから投稿を取得できませんでした: {concise}"
+        f"すべての取得元から投稿を取得できませんでした: {concise}"
     )
 
 
@@ -475,7 +621,7 @@ def report_source_outage(exc: SourceUnavailableError) -> None:
         with Path(summary_path).open("a", encoding="utf-8") as summary:
             summary.write(
                 "### ⚠️ Xログ同期をスキップ\n\n"
-                "設定された公開取得元がすべて利用できなかったため、"
+                "設定された取得元がすべて利用できなかったため、"
                 "Twitterログ.md は変更していません。\n\n"
                 f"`{detail.replace('`', "'")}`\n"
             )
@@ -492,7 +638,7 @@ def main() -> int:
     parser.add_argument(
         "--allow-source-outage",
         action="store_true",
-        help="公開取得元が全滅した場合に警告を出し、ログを変更せず正常終了する",
+        help="取得元が全滅した場合に警告を出し、ログを変更せず正常終了する",
     )
     args = parser.parse_args()
 
