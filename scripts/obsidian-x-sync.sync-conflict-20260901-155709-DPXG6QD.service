@@ -1,0 +1,13 @@
+[Unit]
+Description=Sync X posts into the local Obsidian vault
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/ServerData/ObsidianVault
+UnsetEnvironment=DISPLAY WAYLAND_DISPLAY XAUTHORITY
+ExecStart=/usr/bin/xvfb-run -a -s "-screen 0 1280x900x24" %h/.local/share/obsidian-x-sync/venv/bin/python %h/.local/share/obsidian-x-sync/sync_twitter_browser.py --vault %h/ServerData/ObsidianVault --profile %h/.local/share/obsidian-x-sync/chrome-profile --chrome /usr/bin/google-chrome
+
+[Install]
+WantedBy=default.target
