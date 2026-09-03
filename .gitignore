@@ -5,6 +5,8 @@
 .obsidian/cache/
 .obsidian/plugins/recent-files-obsidian/data.json
 .trash/
+.stversions/
+__pycache__/
 
 # OSが生成するゴミファイル
 .DS_Store
