@@ -1,6 +1,7 @@
 import importlib.util
 import sys
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -31,6 +32,12 @@ class StatusIdTests(unittest.TestCase):
             sync_browser.own_status_id(
                 "/someone/status/2092765914110517399", "sato_mega33"
             )
+        )
+
+    def test_recovers_creation_time_from_status_id(self) -> None:
+        self.assertEqual(
+            sync_browser.status_created_at("2092765914110517399"),
+            datetime(2026, 8, 27, 0, 7, 30, 291000, tzinfo=timezone.utc),
         )
 
 

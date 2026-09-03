@@ -11,6 +11,10 @@ from pathlib import Path
 
 
 OWN_STATUS_RE_TEMPLATE = r"^/{username}/status/(?P<id>\d+)$"
+TWITTER_EPOCH_MS = 1_288_834_974_657
+CURRENT_POST_TEXT_SELECTOR = (
+    'span[class*="text-inherit"][class*="whitespace-pre-wrap"]'
+)
 
 
 class LoginRequiredError(RuntimeError):
@@ -34,6 +38,21 @@ def own_status_id(href: str | None, username: str) -> str | None:
     return match.group("id") if match else None
 
 
+def status_created_at(post_id: str) -> datetime:
+    """Recover a UTC creation time from an X/Twitter snowflake ID."""
+    timestamp_ms = (int(post_id) >> 22) + TWITTER_EPOCH_MS
+    return datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc)
+
+
+def article_text(article) -> str:
+    """Read post text from both the classic and current X markup."""
+    classic = article.locator('[data-testid="tweetText"]').first
+    if classic.count():
+        return classic.inner_text().strip()
+    current = article.locator(CURRENT_POST_TEXT_SELECTOR).first
+    return current.inner_text().strip() if current.count() else ""
+
+
 def article_post(article, username: str, post_type):
     post_id = None
     for link in article.locator('a[href*="/status/"]').all():
@@ -44,15 +63,16 @@ def article_post(article, username: str, post_type):
         return None
 
     time_locator = article.locator("time").first
-    created_raw = time_locator.get_attribute("datetime")
-    if not created_raw:
-        return None
-    created_at = datetime.fromisoformat(created_raw.replace("Z", "+00:00"))
+    created_raw = time_locator.get_attribute("datetime") if time_locator.count() else None
+    created_at = (
+        datetime.fromisoformat(created_raw.replace("Z", "+00:00"))
+        if created_raw
+        else status_created_at(post_id)
+    )
     if created_at.tzinfo is None:
         created_at = created_at.replace(tzinfo=timezone.utc)
 
-    text_locator = article.locator('[data-testid="tweetText"]').first
-    text = text_locator.inner_text().strip() if text_locator.count() else ""
+    text = article_text(article)
     return post_type(
         post_id=post_id,
         created_at=created_at.astimezone(timezone.utc),
@@ -115,7 +135,11 @@ def login(profile: Path, chrome: str, username: str) -> int:
     profile.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as playwright:
         context = playwright.chromium.launch_persistent_context(
-            str(profile), executable_path=chrome, headless=False
+            str(profile),
+            executable_path=chrome,
+            headless=False,
+            # Keep Chrome's process sandbox enabled for this unprivileged user.
+            chromium_sandbox=True,
         )
         page = context.pages[0] if context.pages else context.new_page()
         page.goto(f"https://x.com/{username}", wait_until="domcontentloaded")
@@ -136,6 +160,11 @@ def main() -> int:
     parser.add_argument("--profile", type=Path, required=True)
     parser.add_argument("--chrome", default="/usr/bin/google-chrome")
     parser.add_argument("--login", action="store_true")
+    parser.add_argument(
+        "--headless",
+        action="store_true",
+        help="Use Chrome headless mode (X may reject this mode)",
+    )
     args = parser.parse_args()
 
     if args.login:
@@ -156,19 +185,31 @@ def main() -> int:
         context = playwright.chromium.launch_persistent_context(
             str(args.profile),
             executable_path=args.chrome,
-            headless=True,
-            args=["--disable-dev-shm-usage"],
+            headless=args.headless,
+            chromium_sandbox=True,
+            args=[
+                "--disable-dev-shm-usage",
+                "--window-position=-10000,-10000",
+                "--window-size=1280,900",
+            ],
         )
         page = context.pages[0] if context.pages else context.new_page()
         posts = {}
         for suffix in ("", "/with_replies"):
-            for post in collect_timeline(
-                page,
-                f"https://x.com/{args.username}{suffix}",
-                args.username,
-                known_ids,
-                sync_twitter.Post,
-            ):
+            try:
+                timeline_posts = collect_timeline(
+                    page,
+                    f"https://x.com/{args.username}{suffix}",
+                    args.username,
+                    known_ids,
+                    sync_twitter.Post,
+                )
+            except LoginRequiredError:
+                if suffix == "/with_replies" and posts:
+                    print("warning: 未ログインでは返信一覧を取得できないためスキップします")
+                    continue
+                raise
+            for post in timeline_posts:
                 posts[post.post_id] = post
         context.close()
 
