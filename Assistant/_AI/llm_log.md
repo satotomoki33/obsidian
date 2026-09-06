@@ -74,7 +74,7 @@ AIが行った整理・作成・追記の記録をここに残す。
 - `Assistant/_AI/README_FOR_LLM.md` に `Weekly/` の編集・保存ルールを追加
 - 毎週の週間レビューをGitHubへ保存してから通知するよう自動処理を更新
 - `Assistant/Projects/Android自動化アプリ/overview.md` を作成し、目的・JSON設計・機能・技術構成・MVP・安全機構を整理
-- `Assistant/Projects/Android自動化アプリ/logs.md` を作成し、初期検討内容を記録
+- `Assistant/Projects/Android自動化アプリ/logs.md` を作成し、初期検討内容と決定事項・未解決事項を記録
 - `Assistant/Projects/ロボコン/neko1-ARカメラ確認.md` に実機デバイス対応、ROS画像トピック、launchとの差分、未解決事項を整理
 
 ## 2026-07-31
@@ -158,3 +158,7 @@ AIが行った整理・作成・追記の記録をここに残す。
 ## 2026-09-02
 
 - 22:29 `Daily/2026/10/2026-10-01.md`: 2026年10月1日に三浦先生へメールを送るリマインダーを保存
+
+## 2026-09-06
+
+- `Weekly/2026/08/2026-W36.md` に2026年8月31日〜9月6日の週間レビューを保存
