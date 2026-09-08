@@ -1,0 +1,6 @@
+[Unit]
+Description=Notify when Obsidian git sync fails
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/notify-send --urgency=critical --app-name=Obsidian --icon=dialog-error "Obsidian 同期失敗" "pull・commit・push のいずれかに失敗しました。詳細: journalctl --user -u obsidian-daily-git-push.service -n 50"

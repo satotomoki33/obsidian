@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+VAULT_DIR="/home/sato/obsidian"
+REMOTE="origin"
+DATE="$(date +%F)"
+DRY_RUN=0
+
+if [[ "${1:-}" == "--dry-run" ]]; then
+  DRY_RUN=1
+fi
+
+cd "$VAULT_DIR"
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "Not a git repository: $VAULT_DIR" >&2
+  exit 1
+fi
+
+run() {
+  if (( DRY_RUN )); then
+    printf '+'
+    printf ' %q' "$@"
+    printf '\n'
+  else
+    "$@"
+  fi
+}
+
+has_worktree_changes() {
+  [[ -n "$(git status --porcelain=v1 -- "$1")" ]]
+}
+
+commit_path_if_staged() {
+  local path="$1"
+  local message="$2"
+
+  if git diff --cached --quiet -- "$path"; then
+    return 0
+  fi
+
+  run git commit -m "$message" -- "$path"
+}
+
+retry() {
+  local max_attempts=5
+  local delay=60
+  local attempt=1
+  local git_dir
+
+  while true; do
+    if "$@"; then
+      return 0
+    fi
+
+    # Network errors may recover on retry, but a merge/rebase conflict needs
+    # manual resolution. Retrying while Git is conflicted only repeats the
+    # same failure and delays the notification.
+    git_dir="$(git rev-parse --git-dir)"
+    if [[ -e "$git_dir/index.lock" ]]; then
+      echo "Git index lock detected; stopping without further retries: $git_dir/index.lock" >&2
+      return 1
+    fi
+
+    if [[ -d "$git_dir/rebase-merge" || -d "$git_dir/rebase-apply" ]] ||
+      [[ -n "$(git diff --name-only --diff-filter=U)" ]]; then
+      echo "Git conflict detected; stopping without further retries." >&2
+      return 1
+    fi
+
+    if (( attempt >= max_attempts )); then
+      return 1
+    fi
+
+    echo "Command failed, retrying in ${delay}s (${attempt}/${max_attempts}): $*" >&2
+    sleep "$delay"
+    attempt=$((attempt + 1))
+  done
+}
+
+if (( DRY_RUN )); then
+  echo "Changed root items:"
+  git status --porcelain=v1 -z |
+    while IFS= read -r -d '' record; do
+      if [[ "$record" =~ ^(..)\ (.*)$ ]]; then
+        path="${BASH_REMATCH[2]}"
+      else
+        path="$record"
+      fi
+
+      root="${path%%/*}"
+      case "$root" in
+        ""|.git) continue ;;
+      esac
+      printf '%s\0' "$root"
+    done |
+    sort -zu |
+    tr '\0' '\n'
+  exit 0
+fi
+
+branch="$(git branch --show-current)"
+if [[ -z "$branch" ]]; then
+  echo "Cannot pull or push from a detached HEAD." >&2
+  exit 1
+fi
+
+# Incorporate remote changes before creating local commits. --autostash
+# temporarily saves uncommitted Obsidian edits and restores them after rebase.
+retry git pull --rebase --autostash "$REMOTE" "$branch"
+
+if [[ -n "$(git diff --name-only --diff-filter=U)" ]]; then
+  echo "Git conflict detected after pull; stopping before commit and push." >&2
+  exit 1
+fi
+
+if has_worktree_changes ".obsidian"; then
+  git add -A -- ".obsidian"
+  commit_path_if_staged ".obsidian" "設定を更新 ${DATE}"
+fi
+
+declare -A roots=()
+while IFS= read -r -d '' record; do
+  if [[ "$record" =~ ^(..)\ (.*)$ ]]; then
+    path="${BASH_REMATCH[2]}"
+  else
+    path="$record"
+  fi
+
+  root="${path%%/*}"
+  case "$root" in
+    ""|.git|.obsidian) continue ;;
+  esac
+  roots["$root"]=1
+done < <(git status --porcelain=v1 -z)
+
+if ((${#roots[@]})); then
+  while IFS= read -r -d '' root; do
+    git add -A -- "$root"
+    commit_path_if_staged "$root" "${root} ${DATE}"
+  done < <(printf '%s\0' "${!roots[@]}" | sort -z)
+fi
+
+if git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+  retry git push
+else
+  retry git push -u "$REMOTE" "$branch"
+fi

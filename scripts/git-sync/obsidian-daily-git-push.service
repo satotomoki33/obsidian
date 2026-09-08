@@ -1,0 +1,8 @@
+[Unit]
+Description=Commit and push Obsidian vault by root item
+OnFailure=obsidian-git-sync-failure-notify.service
+
+[Service]
+Type=oneshot
+ExecStart=/home/sato/.local/bin/obsidian-daily-git-push
+WorkingDirectory=/home/sato/obsidian

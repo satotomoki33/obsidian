@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Obsidian vault git push
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+Unit=obsidian-daily-git-push.service
+
+[Install]
+WantedBy=timers.target
