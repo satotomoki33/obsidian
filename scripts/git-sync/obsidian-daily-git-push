@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-VAULT_DIR="/home/sato/obsidian"
+VAULT_DIR="${OBSIDIAN_VAULT_DIR:-$HOME/ServerData/ObsidianVault}"
 REMOTE="origin"
 DATE="$(date +%F)"
 DRY_RUN=0

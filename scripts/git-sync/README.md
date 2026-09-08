@@ -19,7 +19,10 @@ systemctl --user daemon-reload
 systemctl --user enable --now obsidian-daily-git-push.timer
 ```
 
-スクリプトとユニットファイルは `/home/sato/obsidian` を前提にしています。Vaultの場所が異なる場合は、`VAULT_DIR`、`ExecStart`、`WorkingDirectory` を変更してください。
+このPCでは `%h/ServerData/ObsidianVault`（スクリプト内では
+`$HOME/ServerData/ObsidianVault`）をVaultとして使用します。別の場所で使う場合は、
+スクリプトの `OBSIDIAN_VAULT_DIR` 環境変数またはserviceの
+`WorkingDirectory`を変更してください。
 
 同期対象を確認するだけの場合は、次を実行します。
 

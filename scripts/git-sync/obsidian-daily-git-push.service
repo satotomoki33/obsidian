@@ -4,5 +4,5 @@ OnFailure=obsidian-git-sync-failure-notify.service
 
 [Service]
 Type=oneshot
-ExecStart=/home/sato/.local/bin/obsidian-daily-git-push
-WorkingDirectory=/home/sato/obsidian
+ExecStart=%h/.local/bin/obsidian-daily-git-push
+WorkingDirectory=%h/ServerData/ObsidianVault
